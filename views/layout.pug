@@ -1,0 +1,14 @@
+doctype html
+html
+  head
+    link(rel='stylesheet', href='/css/style.css')
+  body
+    include ../views/includes/head.pug
+    .container-fluid
+      include ../views/includes/header.pug
+      .page-header
+        block main
+      .content
+        block content
+    include ../views/includes/footer.pug
+    include ../views/includes/foot.pug

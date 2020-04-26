@@ -1,0 +1,21 @@
+img.main-logo {
+  width: 100%;
+}
+
+#headerBox ul.nav-fill {
+  justify-content: space-around;
+  width: 100%;
+}
+
+#headerBox ul.nav-fill li.nav-item {
+  padding: 0px 5px;
+  background: #045586;
+  background-clip: content-box;
+  text-align: center;
+  color: #fff;
+}
+
+#headerBox ul.nav-fill li.nav-item > a {
+  color: #fff;
+  font-size: 25px;
+}

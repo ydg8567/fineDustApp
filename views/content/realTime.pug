@@ -1,0 +1,42 @@
+link(rel='stylesheet', href='/css/realTime.css')
+#realTime-container.container-fluid
+  .row
+    .col-6.mapBox 
+      .map
+    .col-5.infoBox
+      .col-12.info 
+        .row.info-title
+          .col-12 
+            span 우리동네 대기정보 
+            button.btn.btn-primary.search-btn 측정소 검색
+        .row
+          .col-12 중구 을(를) 중심으로 측정한 대기질정보
+        .row.info-circle-chart
+          #pm2-5-circle.col-8 PM2.5
+          #pm2-5-circle-text.col-4 
+            div 2020년 04월 24일 11시
+            div ● 1시간: 15ug/m^2
+            div ● 24시간: 11ug/m^2
+        .row
+          table#dust-value-table
+            thead
+              tr
+                th 항목
+                th 등급
+                th 측정값
+                th 항목 
+                th 등급
+                th 측정값
+            tbody
+              tr
+                td.legend(rowspan="2") 초미세먼지(PM<sub>2.5</sub>)
+                td(rowspan="2") ㅇ
+                td 13ug/m^2(1h)
+                td.legend(rowspan="2") 미세먼지(PM<sub>10</sub>)
+                td(rowspan="2") ㅇ
+                td 33ug/m^2(1h)
+              tr
+                td 11ug/m^2(24h)
+                td 31ug/m^2(24h)
+        .row.info-line-chart
+          #pm2-5-chart.col-12 PM2.5
