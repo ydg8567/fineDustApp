@@ -1,0 +1,55 @@
+#info-container .btn {
+  border-radius: 0px;
+}
+
+#info-container div.info-title {
+  font-size: 35px;
+  text-align: center;
+  border-bottom: 1px solid #000;
+}
+
+#info-container .info-search {
+  margin: 10px 0px;
+  border: 1px solid #000;
+  background-color: #fafafa;
+}
+
+#info-container .info-search .row {
+  height: 50px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#info-container .info-search .col-2 {
+  border-right: 1px solid black;
+  padding: 0px 100px;
+}
+
+#info-container .info-search .col-10 label {
+  margin-left: 15px;
+}
+
+#info-container label {
+  margin-bottom: 0px;
+}
+
+#info-container #info-table th, #info-container #info-table td {
+  border: 1px solid #000;
+  width: 143px;
+  text-align: center;
+}
+
+#info-container #info-table th pre, #info-container #info-table td pre {
+  display: contents;
+}
+
+
+#info-container .print-btn {
+  margin: 10px 0px;
+  text-align: right;
+}
+
+#info-container .print-btn .col-12 {
+  padding: 0px;
+}

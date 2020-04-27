@@ -1,0 +1,209 @@
+extends ../layout
+
+block content
+  link(rel='stylesheet', href='/css/info.css')
+  #info-container.container-fluid
+    .row.info-title
+      .col-12 측정자료 조회
+    .row.info-search
+      .col-12
+        .row
+          .col-2 ■ 데이터 구분
+          .col-10 
+            label
+              input#time(type="radio", name="time")
+              | 시간
+            label
+              input#day(type="radio", name="time")
+              | 일평균
+        .row
+          .col-2 ■ 조회기간
+          .col-10 
+            input#startDate(type="text", name="startDate", value="2020-04-24")
+            input#startTime(type="text", name="startTime", value="01")
+            | ~
+            input#endDate(type="text", name="endDate", value="2020-04-24")
+            input#endTime(type="text", name="endTime", value="11")
+            button.btn.btn-primary 검색
+            button.btn.btn-primary 그래프보기
+            button.btn.btn-primary 엑셀
+    .row
+      .col-12 측정자료(수치)
+    .row
+      .col-12
+        table#info-table
+          thead
+            tr
+              th(rowspan="2") 날짜<br/>(월-일-시)
+              th(colspan="2") PM<pre>10</pre><br/>(ug/m^2)
+              th(colspan="2") PM<pre>2.5</pre><br>(ug/m^2)
+              th(colspan="2") 오존<br>(ppm)
+              th(colspan="2") 이산화질소<br>(ppm)
+              th(colspan="2") 이산화탄소<br>(ppm)
+              th(colspan="2") 아황산가스<Br>(ppm)
+            tr
+              th(colspan="2") 1시간
+              th(colspan="2") 1시간
+              th(colspan="2") 1시간
+              th(colspan="2") 1시간
+              th(colspan="2") 1시간
+              th(colspan="2") 1시간
+          tbody
+            tr
+              td 04-01:11
+              td O
+              td 33
+              td O
+              td 13
+              td O
+              td 0.033
+              td O
+              td 0.017
+              td O
+              td 0.3
+              td O
+              td 0.004
+            tr
+              td 04-01:11
+              td O
+              td 33
+              td O
+              td 13
+              td O
+              td 0.033
+              td O
+              td 0.017
+              td O
+              td 0.3
+              td O
+              td 0.004
+            tr
+              td 04-01:11
+              td O
+              td 33
+              td O
+              td 13
+              td O
+              td 0.033
+              td O
+              td 0.017
+              td O
+              td 0.3
+              td O
+              td 0.004
+            tr
+              td 04-01:11
+              td O
+              td 33
+              td O
+              td 13
+              td O
+              td 0.033
+              td O
+              td 0.017
+              td O
+              td 0.3
+              td O
+              td 0.004
+            tr
+              td 04-01:11
+              td O
+              td 33
+              td O
+              td 13
+              td O
+              td 0.033
+              td O
+              td 0.017
+              td O
+              td 0.3
+              td O
+              td 0.004
+            tr
+              td 04-01:11
+              td O
+              td 33
+              td O
+              td 13
+              td O
+              td 0.033
+              td O
+              td 0.017
+              td O
+              td 0.3
+              td O
+              td 0.004
+            tr
+              td 04-01:11
+              td O
+              td 33
+              td O
+              td 13
+              td O
+              td 0.033
+              td O
+              td 0.017
+              td O
+              td 0.3
+              td O
+              td 0.004
+            tr
+              td 04-01:11
+              td O
+              td 33
+              td O
+              td 13
+              td O
+              td 0.033
+              td O
+              td 0.017
+              td O
+              td 0.3
+              td O
+              td 0.004
+            tr
+              td 04-01:11
+              td O
+              td 33
+              td O
+              td 13
+              td O
+              td 0.033
+              td O
+              td 0.017
+              td O
+              td 0.3
+              td O
+              td 0.004
+            tr
+              td 04-01:11
+              td O
+              td 33
+              td O
+              td 13
+              td O
+              td 0.033
+              td O
+              td 0.017
+              td O
+              td 0.3
+              td O
+              td 0.004
+            tr
+              td 04-01:11
+              td O
+              td 33
+              td O
+              td 13
+              td O
+              td 0.033
+              td O
+              td 0.017
+              td O
+              td 0.3
+              td O
+              td 0.004
+    .row.print-btn
+      .col-12
+        button.btn.btn-primary 인쇄  
+
