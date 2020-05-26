@@ -20,190 +20,106 @@ block content
           .col-2 ■ 조회기간
           .col-10 
             input#startDate(type="text", name="startDate", value="2020-04-24")
-            input#startTime(type="text", name="startTime", value="01")
+            select#startTime(name="startTime")
+              option(value="01") 01
             | ~
             input#endDate(type="text", name="endDate", value="2020-04-24")
-            input#endTime(type="text", name="endTime", value="11")
+            select#endTime(name="endTime")
+              option(value="11") 11
             button.btn.btn-primary 검색
             button.btn.btn-primary 그래프보기
             button.btn.btn-primary 엑셀
-    .row
-      .col-12 측정자료(수치)
-    .row
+    .row.info-table
       .col-12
+        div 측정자료(수치)
         table#info-table
           thead
             tr
               th(rowspan="2") 날짜<br/>(월-일-시)
-              th(colspan="2") PM<pre>10</pre><br/>(ug/m^2)
-              th(colspan="2") PM<pre>2.5</pre><br>(ug/m^2)
-              th(colspan="2") 오존<br>(ppm)
-              th(colspan="2") 이산화질소<br>(ppm)
-              th(colspan="2") 이산화탄소<br>(ppm)
-              th(colspan="2") 아황산가스<Br>(ppm)
+              th(colspan="2") PM<pre>10</pre><br/>(㎍/㎥)
+              th(colspan="2") PM<pre>2.5</pre><br>(㎍/㎥)
             tr
-              th(colspan="2") 1시간
-              th(colspan="2") 1시간
-              th(colspan="2") 1시간
-              th(colspan="2") 1시간
               th(colspan="2") 1시간
               th(colspan="2") 1시간
           tbody
             tr
-              td 04-01:11
-              td O
-              td 33
-              td O
-              td 13
-              td O
-              td 0.033
-              td O
-              td 0.017
-              td O
-              td 0.3
-              td O
-              td 0.004
+              td 04-01:24
+              td.blue ●
+              td 27
+              td.green ●
+              td 19
             tr
-              td 04-01:11
-              td O
-              td 33
-              td O
-              td 13
-              td O
-              td 0.033
-              td O
-              td 0.017
-              td O
-              td 0.3
-              td O
-              td 0.004
+              td 04-01:23
+              td.green ●
+              td 39
+              td.green ●
+              td 23
             tr
-              td 04-01:11
-              td O
-              td 33
-              td O
-              td 13
-              td O
-              td 0.033
-              td O
-              td 0.017
-              td O
-              td 0.3
-              td O
-              td 0.004
+              td 04-01:22
+              td.green ●
+              td 41
+              td.green ●
+              td 20
             tr
-              td 04-01:11
-              td O
-              td 33
-              td O
-              td 13
-              td O
-              td 0.033
-              td O
-              td 0.017
-              td O
-              td 0.3
-              td O
-              td 0.004
+              td 04-01:21
+              td.green ●
+              td 44
+              td.green ●
+              td 22
             tr
-              td 04-01:11
-              td O
-              td 33
-              td O
-              td 13
-              td O
-              td 0.033
-              td O
-              td 0.017
-              td O
-              td 0.3
-              td O
-              td 0.004
+              td 04-01:20
+              td.green ●
+              td 58
+              td.green ●
+              td 28
             tr
-              td 04-01:11
-              td O
-              td 33
-              td O
-              td 13
-              td O
-              td 0.033
-              td O
-              td 0.017
-              td O
-              td 0.3
-              td O
-              td 0.004
+              td 04-01:19
+              td.green ●
+              td 75
+              td.yellow ●
+              td 41
             tr
-              td 04-01:11
-              td O
-              td 33
-              td O
-              td 13
-              td O
-              td 0.033
-              td O
-              td 0.017
-              td O
-              td 0.3
-              td O
-              td 0.004
+              td 04-01:18
+              td.green ●
+              td 76
+              td.yellow ●
+              td 37
             tr
-              td 04-01:11
-              td O
-              td 33
-              td O
-              td 13
-              td O
-              td 0.033
-              td O
-              td 0.017
-              td O
-              td 0.3
-              td O
-              td 0.004
+              td 04-01:17
+              td.green ●
+              td 72
+              td.yellow ●
+              td 36
             tr
-              td 04-01:11
-              td O
-              td 33
-              td O
-              td 13
-              td O
-              td 0.033
-              td O
-              td 0.017
-              td O
-              td 0.3
-              td O
-              td 0.004
+              td 04-01:16
+              td.green ●
+              td 56
+              td.green ●
+              td 29
             tr
-              td 04-01:11
-              td O
-              td 33
-              td O
-              td 13
-              td O
-              td 0.033
-              td O
-              td 0.017
-              td O
-              td 0.3
-              td O
-              td 0.004
+              td 04-01:15
+              td.green ●
+              td 51
+              td.green ●
+              td 27
             tr
-              td 04-01:11
-              td O
-              td 33
-              td O
-              td 13
-              td O
-              td 0.033
-              td O
-              td 0.017
-              td O
-              td 0.3
-              td O
-              td 0.004
-    .row.print-btn
-      .col-12
-        button.btn.btn-primary 인쇄  
+              td 04-01:14
+              td.green ●
+              td 47
+              td.green ●
+              td 27
+            tr
+              td 04-01:13
+              td.green ●
+              td 38
+              td.green ●
+              td 23
+            tr
+              td 04-01:12
+              td.green ●
+              td 40
+              td.green ●
+              td 24
+        .print-btn
+          button.btn.btn-primary 인쇄  
 

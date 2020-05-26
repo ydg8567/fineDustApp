@@ -10,9 +10,11 @@ link(rel='stylesheet', href='/css/realTime.css')
             span 우리동네 대기정보 
             button.btn.btn-primary.search-btn 측정소 검색
         .row
-          .col-12 중구 을(를) 중심으로 측정한 대기질정보
+          .col-12 동구 을(를) 중심으로 측정한 대기질정보
         .row.info-circle-chart
-          #pm2-5-circle.col-8 PM2.5
+          #pm2-5-circle
+            canvas(id="chartPic" width="400" height="176")
+            div.circle-chart-needle
           #pm2-5-circle-text.col-4 
             div 2020년 04월 24일 11시
             div ● 1시간: 15ug/m^2
@@ -31,12 +33,65 @@ link(rel='stylesheet', href='/css/realTime.css')
               tr
                 td.legend(rowspan="2") 초미세먼지(PM<sub>2.5</sub>)
                 td(rowspan="2") ㅇ
-                td 13ug/m^2(1h)
+                td 13㎍/㎥(1h)
                 td.legend(rowspan="2") 미세먼지(PM<sub>10</sub>)
                 td(rowspan="2") ㅇ
-                td 33ug/m^2(1h)
+                td 33㎍/㎥(1h)
               tr
-                td 11ug/m^2(24h)
-                td 31ug/m^2(24h)
+                td 11㎍/㎥(24h)
+                td 31㎍/㎥(24h)
         .row.info-line-chart
-          #pm2-5-chart.col-12 PM2.5
+          #pm2-5-chart.col-12   
+            canvas(id="chartPic2" width="400" height="176")
+            script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js")
+            script.
+              window.onload = function() {
+                var ctx = document.getElementById("chartPic").getContext('2d');
+                var chart = new Chart(ctx,  {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [{
+                          data: [15, 25, 50, 15],
+                          backgroundColor: ["#24a6e1", "#24e124", "#dae124", "#e12424"],
+                          borderColor: ["#24a6e1", "#24e124", "#dae124", "#e12424"],
+                          borderWidth: 1
+                        }],
+                        labels: ['매우 좋음', '좋음', '나쁨', '매우 나쁨']
+                      },
+                    options: {
+                      cutoutPercentage: 65,
+                      circumference: Math.PI,
+                      rotation: -Math.PI,
+                      title: { 
+                        display: true,
+                        text: "PM2.5",
+                      },
+                      legend: {
+                        display: false
+                      },
+                    }
+                  });
+                  
+                var ctx2 = document.getElementById("chartPic2").getContext('2d');
+                var chart2 = new Chart(ctx2,  {
+                    type: 'line',
+                    data: {
+                        labels: ['2020-04-15', '2020-04-16', '2020-04-17', '2020-04-18'],
+                        datasets: [{
+                          label: 'Number of votes',
+                          data: [15, 25, 50, 15],
+                          borderColor: "#24a6e1",
+                          borderWidth: 1
+                        }]
+                      },
+                    options: {
+                      title: { 
+                        display: true,
+                        text: "PM2.5",
+                      },
+                      legend: {
+                        display: false
+                      },
+                    }
+                  });
+              }

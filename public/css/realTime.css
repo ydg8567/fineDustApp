@@ -59,9 +59,22 @@
 }
 
 #realTime-container div.infoBox div.info div.info-circle-chart div#pm2-5-circle {
-  background-image: url('/images/pm2_circle_chart.png');
+  position: relative;
+  width: 460px;
+  height: 198px;
+  overflow: hidden;
+}
+
+#realTime-container div.infoBox div.info div.info-circle-chart div#pm2-5-circle div.circle-chart-needle {
+  position: absolute;
+  transform: rotate(-90deg);
+  left: 0px;
+  top: 0px;
+  width: 460px;
+  height: 404px;
+  overflow: hidden;
+  background-image: url('/images/pm2_circle_chart_needle.png');
   background-repeat: no-repeat;
-  height: 100%;
 }
 
 #realTime-container div.infoBox div.info div.info-circle-chart div#pm2-5-circle-text {
@@ -77,13 +90,10 @@
 }
 
 #realTime-container div.infoBox div.info div.info-line-chart div#pm2-5-chart {
-  background-image: url('/images/pm2_chart.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position-x: center;
-  background-position-y: bottom;
-  text-align: center;
   font-size: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #realTime-container #dust-value-table {
