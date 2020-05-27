@@ -16,9 +16,9 @@ link(rel='stylesheet', href='/css/realTime.css')
             canvas(id="chartPic" width="400" height="176")
             div#circle-chart-needle
           #pm2-5-circle-text.col-4 
-            div #{today}
-            div ● 1시간: #{UltrafineHour}ug/m^2
-            div ● 24시간: #{UltrafineDay}ug/m^2
+            div#circle-chart-today 
+            div#circle-chart-ultrafine-hour
+            div#circle-chart-ultrafine-day
         .row
           table#dust-value-table
             thead
@@ -33,21 +33,79 @@ link(rel='stylesheet', href='/css/realTime.css')
               tr
                 td.legend(rowspan="2") 초미세먼지(PM<sub>2.5</sub>)
                 td(rowspan="2") ㅇ
-                td #{UltrafineHour}㎍/㎥(1h)
+                td#ultrafine-hour
                 td.legend(rowspan="2") 미세먼지(PM<sub>10</sub>)
                 td(rowspan="2") ㅇ
-                td #{dustHour}㎍/㎥(1h)
+                td#dust-hour
               tr
-                td #{UltrafineDay}㎍/㎥(24h)
-                td #{dustDay}㎍/㎥(24h)
+                td#ultrafine-day
+                td#dust-day
         .row.info-line-chart
           #pm2-5-chart.col-12   
             canvas(id="chartPic2" width="400" height="176")
             script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js")
+            script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js')
             script(type='text/javascript').
-              window.onload = function() {
-                var data = "#{data}";
-                document.querySelector("#circle-chart-needle").style.transform = `rotate(${(180 * data / 100) + -90}deg)`
+              let barChartData = {
+                        labels: [].map((d, index) => { return d.rgstDt.split(" ")[1] }),
+                        datasets: [{
+                          label: 'PM2.5',
+                          data: [].map(d => { return d.value }),
+                          backgroundColor: [].map(d => { if(d.value > 35) { return "#DAE124" } else {return "#24A6E1"} }),
+                        }]
+                      }
+              let barChart;
+              let circleChart;
+
+              $(document).ready(() => {
+                getChartData();
+
+                window.setInterval(() => {
+                  getChartData();
+                }, 10000);
+              });
+
+              const getChartData = () => {
+                $.ajax({url: "/api/get/chartdata", success: (result) => {
+                  if(barChartData.datasets[0].data.length === 0) {
+                    barChartData = {
+                      labels: result.lineGraphData.map((d, index) => { return d.rgstDt.split(" ")[1] }),
+                      datasets: [{
+                        label: 'PM2.5',
+                        data: result.lineGraphData.map(d => { return d.value }),
+                        backgroundColor: result.lineGraphData.map(d => { if(d.value > 35) { return "#DAE124" } else {return "#24A6E1"} }),
+                      }]
+                    }
+                    createChart(result);
+                  }
+                  
+                  updatePageData(result);
+                }})
+              }
+
+              const updatePageData = data => {
+                barChartData = {
+                      labels: data.lineGraphData.map((d, index) => { return d.rgstDt.split(" ")[1] }),
+                      datasets: [{
+                        label: 'PM2.5',
+                        data: data.lineGraphData.map(d => { return d.value }),
+                        backgroundColor: data.lineGraphData.map(d => { if(d.value > 35) { return "#DAE124" } else {return "#24A6E1"} }),
+                      }]
+                    }
+                circleChart.update();
+
+                document.querySelector("#circle-chart-needle").style.transform = `rotate(${(180 * data.data / 100) + -90}deg)`;
+                $("#circle-chart-today").text(data.today);
+                $("#circle-chart-ultrafine-hour").text(`● 1시간: ${data.ultrafineHour}ug/m²`);
+                $("#circle-chart-ultrafine-day").text(`● 24시간: ${data.ultrafineDay}ug/m²`);
+
+                $("#ultrafine-hour").text(`${data.ultrafineHour}㎍/㎥(1h)`);
+                $("#dust-hour").text(`${data.dustHour}㎍/㎥(1h)`);
+                $("#ultrafine-day").text(`${data.ultrafineDay}㎍/㎥(24h)`);
+                $("#dust-day").text(`${data.dustDay}㎍/㎥(24h)`);
+              }
+
+              const createChart = () => {
                 var ctx = document.getElementById("chartPic").getContext('2d');
                 var chart = new Chart(ctx,  {
                     type: 'doughnut',
@@ -74,18 +132,10 @@ link(rel='stylesheet', href='/css/realTime.css')
                     }
                   });
                   
-                var lineGraphData = JSON.parse('!{JSON.stringify(lineGraphData)}');
                 var ctx2 = document.getElementById("chartPic2").getContext('2d');
-                var chart2 = new Chart(ctx2,  {
+                circleChart = new Chart(ctx2,  {
                     type: 'bar',
-                    data: {
-                        labels: lineGraphData.map((d, index) => { return d.rgstDt.split(" ")[1] }),
-                        datasets: [{
-                          label: 'PM2.5',
-                          data: lineGraphData.map(d => { return d.value }),
-                          backgroundColor: lineGraphData.map(d => { if(d.value > 35) { return "#DAE124" } else {return "#24A6E1"} }),
-                        }]
-                      },
+                    data: barChartData,
                     options: {
                       title: { 
                         display: true,

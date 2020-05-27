@@ -4,13 +4,15 @@ var moment = require('moment');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  console.log(moment().format('YYYY년 MM월 DD일 hh시'));
-  
-  res.render('index', {today: moment().format('YYYY년 MM월 DD일 hh시'),
+  res.render('index');
+});
+
+router.get('/api/get/chartdata', function(req, res, next) {
+  res.send({today: moment().format('YYYY년 MM월 DD일 hh시'),
                        dustHour: 33,
                        dustDay: 31,
-                       UltrafineHour: 13,
-                       UltrafineDay: 11,
+                       ultrafineHour: 13,
+                       ultrafineDay: 11,
                        data: 30, 
                        lineGraphData: [
                                         {'rgstDt': '2020-05-25 14:11:00', 'value': 25},
