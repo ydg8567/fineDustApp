@@ -14,11 +14,11 @@ link(rel='stylesheet', href='/css/realTime.css')
         .row.info-circle-chart
           #pm2-5-circle
             canvas(id="chartPic" width="400" height="176")
-            div.circle-chart-needle
+            div#circle-chart-needle
           #pm2-5-circle-text.col-4 
-            div 2020년 04월 24일 11시
-            div ● 1시간: 15ug/m^2
-            div ● 24시간: 11ug/m^2
+            div #{today}
+            div ● 1시간: #{UltrafineHour}ug/m^2
+            div ● 24시간: #{UltrafineDay}ug/m^2
         .row
           table#dust-value-table
             thead
@@ -33,19 +33,21 @@ link(rel='stylesheet', href='/css/realTime.css')
               tr
                 td.legend(rowspan="2") 초미세먼지(PM<sub>2.5</sub>)
                 td(rowspan="2") ㅇ
-                td 13㎍/㎥(1h)
+                td #{UltrafineHour}㎍/㎥(1h)
                 td.legend(rowspan="2") 미세먼지(PM<sub>10</sub>)
                 td(rowspan="2") ㅇ
-                td 33㎍/㎥(1h)
+                td #{dustHour}㎍/㎥(1h)
               tr
-                td 11㎍/㎥(24h)
-                td 31㎍/㎥(24h)
+                td #{UltrafineDay}㎍/㎥(24h)
+                td #{dustDay}㎍/㎥(24h)
         .row.info-line-chart
           #pm2-5-chart.col-12   
             canvas(id="chartPic2" width="400" height="176")
             script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js")
-            script.
+            script(type='text/javascript').
               window.onload = function() {
+                var data = "#{data}";
+                document.querySelector("#circle-chart-needle").style.transform = `rotate(${(180 * data / 100) + -90}deg)`
                 var ctx = document.getElementById("chartPic").getContext('2d');
                 var chart = new Chart(ctx,  {
                     type: 'doughnut',
@@ -72,16 +74,16 @@ link(rel='stylesheet', href='/css/realTime.css')
                     }
                   });
                   
+                var lineGraphData = JSON.parse('!{JSON.stringify(lineGraphData)}');
                 var ctx2 = document.getElementById("chartPic2").getContext('2d');
                 var chart2 = new Chart(ctx2,  {
-                    type: 'line',
+                    type: 'bar',
                     data: {
-                        labels: ['2020-04-15', '2020-04-16', '2020-04-17', '2020-04-18'],
+                        labels: lineGraphData.map((d, index) => { return d.rgstDt.split(" ")[1] }),
                         datasets: [{
-                          label: 'Number of votes',
-                          data: [15, 25, 50, 15],
-                          borderColor: "#24a6e1",
-                          borderWidth: 1
+                          label: 'PM2.5',
+                          data: lineGraphData.map(d => { return d.value }),
+                          backgroundColor: lineGraphData.map(d => { if(d.value > 35) { return "#DAE124" } else {return "#24A6E1"} }),
                         }]
                       },
                     options: {
@@ -92,6 +94,18 @@ link(rel='stylesheet', href='/css/realTime.css')
                       legend: {
                         display: false
                       },
+                      scales: {
+                        xAxes: [{
+                          ticks: {
+                            fontSize: 10
+                          }
+                        }],
+                        yAxes: [{
+                          ticks: {
+                            fontSize: 15
+                          }
+                        }]
+                      }
                     }
                   });
               }

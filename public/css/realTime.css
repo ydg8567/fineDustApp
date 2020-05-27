@@ -65,7 +65,7 @@
   overflow: hidden;
 }
 
-#realTime-container div.infoBox div.info div.info-circle-chart div#pm2-5-circle div.circle-chart-needle {
+#realTime-container div.infoBox div.info div.info-circle-chart div#pm2-5-circle div#circle-chart-needle {
   position: absolute;
   transform: rotate(-90deg);
   left: 0px;
