@@ -8,14 +8,14 @@ link(rel='stylesheet', href='/css/realTime.css')
         .row.info-title
           .col-12 
             span 우리동네 대기정보 
-            button.btn.btn-primary.search-btn 측정소 검색
+            //- button.btn.btn-primary.search-btn 측정소 검색
         .row
           .col-12 동구 을(를) 중심으로 측정한 대기질정보
         .row.info-circle-chart
           #pm2-5-circle
             canvas(id="chartPic" width="400" height="176")
             div#circle-chart-needle
-          #pm2-5-circle-text.col-4 
+          #pm2-5-circle-text
             div#circle-chart-today 
             div#circle-chart-ultrafine-hour
             div#circle-chart-ultrafine-day
@@ -62,7 +62,7 @@ link(rel='stylesheet', href='/css/realTime.css')
 
                 window.setInterval(() => {
                   getChartData();
-                }, 10000);
+                }, 100000);
               });
 
               const getChartData = () => {
@@ -106,8 +106,8 @@ link(rel='stylesheet', href='/css/realTime.css')
               }
 
               const createChart = () => {
-                var ctx = document.getElementById("chartPic").getContext('2d');
-                var chart = new Chart(ctx,  {
+                const ctx = document.getElementById("chartPic").getContext('2d');
+                const chart = new Chart(ctx,  {
                     type: 'doughnut',
                     data: {
                         datasets: [{
@@ -132,7 +132,7 @@ link(rel='stylesheet', href='/css/realTime.css')
                     }
                   });
                   
-                var ctx2 = document.getElementById("chartPic2").getContext('2d');
+                const ctx2 = document.getElementById("chartPic2").getContext('2d');
                 circleChart = new Chart(ctx2,  {
                     type: 'bar',
                     data: barChartData,

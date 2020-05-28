@@ -1,3 +1,7 @@
+html {
+  -webkit-text-size-adjust: none;
+}
+
 img.main-logo {
   width: 274px;
 }
@@ -13,9 +17,42 @@ img.main-logo {
   background-clip: content-box;
   text-align: center;
   color: #fff;
+  border: 1px solid #fff;
 }
 
 #headerBox ul.nav-fill li.nav-item > a {
   color: #fff;
   font-size: 25px;
+}
+
+@media (max-width: 1300px) {
+  #headerBox ul.nav-fill li.nav-item > a {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  #headerBox ul.nav-fill li.nav-item > a {
+    font-size: 13px;
+    padding: 5px 0px;
+  }
+
+  #headerBox ul.nav-fill {
+    flex-direction: row;
+  }
+
+  #headerBox ul.nav-fill li.nav-item {
+    padding: 0px 0px;
+    width: 30%;
+  }
+
+  .container-fluid .content {
+    margin-top: 15px;
+    overflow: hidden;
+  }
+
+  #headerLogo {
+    width: 100%;
+    text-align: center;
+  }
 }
