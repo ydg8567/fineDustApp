@@ -2,6 +2,11 @@ extends ../layout
 
 block content
   link(rel='stylesheet', href='/css/info.css')
+  script.
+    $( function() {
+      $( "#startDate" ).datepicker({});
+      $( "#endDate" ).datepicker({});
+    });
   #info-container.container-fluid
     .row.info-title
       .col-12 측정자료 조회
@@ -21,14 +26,16 @@ block content
           .col-10 
             input#startDate(type="text", name="startDate", value="2020-04-24")
             select#startTime(name="startTime")
-              option(value="01") 01
+              -for (let i = 1; i < 25; i++)
+                option(value=i)= i
             |  
             input#endDate(type="text", name="endDate", value="2020-04-24")
             select#endTime(name="endTime")
-              option(value="11") 11
+              -for (let i = 1; i < 25; i++)
+                option(value=i)= i
             button.btn.btn-primary 검색
-            button.btn.btn-primary 그래프보기
-            button.btn.btn-primary 엑셀
+            //- button.btn.btn-primary 그래프보기
+            //- button.btn.btn-primary 엑셀
     .row.info-table
       .col-12
         div 측정자료(수치)
