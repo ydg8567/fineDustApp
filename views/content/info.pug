@@ -7,6 +7,29 @@ block content
       $( "#startDate" ).datepicker({});
       $( "#endDate" ).datepicker({});
     });
+
+    const infoSearching = () => {
+      const form = document.getElementById('infoSearchForm');
+      
+      $.ajax({
+        data: {
+          'startDate': form.startDate.value,
+          'startTime': form.startTime.value,
+          'endDate': form.endDate.value,
+          'endTime': form.endTime.value,
+        }, 
+        type: 'get', 
+        dataType : 'html', 
+        url: "/info/api/search", 
+        contentType: 'application/json', 
+        success: (result) => {
+          $("#info-table > tbody").html(result);
+        },
+        error: (err) => {
+          console.log(err)
+        }
+      })
+    }
   #info-container.container-fluid
     .row.info-title
       .col-12 측정자료 조회
@@ -24,16 +47,17 @@ block content
         .row
           .col-2 ■ 조회기간
           .col-10 
-            input#startDate(type="text", name="startDate", value="2020-04-24")
-            select#startTime(name="startTime")
-              -for (let i = 1; i < 25; i++)
-                option(value=i)= i
-            |  
-            input#endDate(type="text", name="endDate", value="2020-04-24")
-            select#endTime(name="endTime")
-              -for (let i = 1; i < 25; i++)
-                option(value=i)= i
-            button.btn.btn-primary 검색
+            form#infoSearchForm(name="infoSearchForm", method="get")
+              input#startDate(type="text", name="startDate", value="2020-04-24")
+              select#startTime(name="startTime")
+                -for (let i = 1; i < 25; i++)
+                  option(value=i)= i
+              |  
+              input#endDate(type="text", name="endDate", value="2020-04-24")
+              select#endTime(name="endTime")
+                -for (let i = 1; i < 25; i++)
+                  option(value=i)= i
+            button.btn.btn-primary(onClick='infoSearching()') 검색
             //- button.btn.btn-primary 그래프보기
             //- button.btn.btn-primary 엑셀
     .row.info-table
