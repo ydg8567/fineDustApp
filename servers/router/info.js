@@ -1,14 +1,22 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const moment = require('moment');
 const connection = require("../connection");
 
 /* GET info page. */
 router.get('/', (req, res, next) => {
-  const query = `SELECT * FROM gas_log_tb WHERE module_idx = 2 LIMIT 30`;
+  const query = `SELECT * FROM finedust_tb ORDER BY rgst_dt DESC LIMIT 30`;
 
   connection.query(query, (err, rows, fields) => {
     if (!err) {
-      res.render('content/info', {'datas': rows});
+      res.render('content/info', {'datas': rows.map(data => {
+                                            return {
+                                              dust: data.dust,
+                                              ultrafine: data.ultrafine,
+                                              rgst_dt: moment(data.rgst_dt).format('MM-DD:hh')
+                                            }
+                                          })
+                                  });
     }
     else {
       console.log(err);
@@ -18,7 +26,7 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/api/search', (req, res, next) => {
-  const query = `SELECT * FROM gas_log_tb WHERE module_idx = 2 LIMIT 30`;
+  const query = `SELECT * FROM finedust_tb ORDER BY rgst_dt DESC LIMIT 30`;
 
   connection.query(query, (err, rows, fields) => {
     if (!err) {

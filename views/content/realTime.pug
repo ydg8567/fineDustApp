@@ -65,21 +65,30 @@ link(rel='stylesheet', href='/css/realTime.css')
               });
 
               const getChartData = () => {
-                $.ajax({url: "/api/get/chartdata", success: (result) => {
-                  if(barChartData.datasets[0].data.length === 0) {
-                    barChartData = {
-                      labels: result.lineGraphData.map((d, index) => { return d.rgstDt.split(" ")[1] }),
-                      datasets: [{
-                        label: 'PM2.5',
-                        data: result.lineGraphData.map(d => { return d.value }),
-                        backgroundColor: result.lineGraphData.map(d => { if(d.value > 35) { return "#DAE124" } else {return "#24A6E1"} }),
-                      }]
+                $.ajax({
+                  url: "/api/get/chartdata", 
+                  type: 'get', 
+                  dataType : 'json', 
+                  success: (result) => {
+                    console.log(result);
+                    if(barChartData.datasets[0].data.length === 0) {
+                      barChartData = {
+                        labels: result.lineGraphData.map((d, index) => { return d.rgstDt }),
+                        datasets: [{
+                          label: 'PM2.5',
+                          data: result.lineGraphData.map(d => { return d.value }),
+                          backgroundColor: result.lineGraphData.map(d => { if(d.value > 35) { return "#DAE124" } else {return "#24A6E1"} }),
+                        }]
+                      }
+                      createChart(result);
                     }
-                    createChart(result);
+                    
+                    updatePageData(result);
+                  },
+                  error: (err) => {
+                    console.log(err);
                   }
-                  
-                  updatePageData(result);
-                }})
+                })
               }
 
               const updatePageData = data => {

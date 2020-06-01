@@ -1,13 +1,14 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const server = require('./servers/server');
 
-var indexRouter = require('./servers/router/index');
-var infoRouter = require('./servers/router/info');
+const indexRouter = require('./servers/router/index');
+const infoRouter = require('./servers/router/info');
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -36,6 +37,17 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+// tcp ip server
+server.listen(3002, function() {
+  console.log('Server listening: ' + JSON.stringify(server.address()));
+  server.on('close', function(){
+      console.log('Server Terminated');
+  });
+  server.on('error', function(err){
+      console.log('Server Error: ', JSON.stringify(err));
+  });
 });
 
 module.exports = app;

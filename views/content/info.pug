@@ -73,84 +73,13 @@ block content
               th(colspan="2") 1시간
               th(colspan="2") 1시간
           tbody
-            tr
-              td 04-01:24
-              td.blue ●
-              td 27
-              td.green ●
-              td 19
-            tr
-              td 04-01:23
-              td.green ●
-              td 39
-              td.green ●
-              td 23
-            tr
-              td 04-01:22
-              td.green ●
-              td 41
-              td.green ●
-              td 20
-            tr
-              td 04-01:21
-              td.green ●
-              td 44
-              td.green ●
-              td 22
-            tr
-              td 04-01:20
-              td.green ●
-              td 58
-              td.green ●
-              td 28
-            tr
-              td 04-01:19
-              td.green ●
-              td 75
-              td.yellow ●
-              td 41
-            tr
-              td 04-01:18
-              td.green ●
-              td 76
-              td.yellow ●
-              td 37
-            tr
-              td 04-01:17
-              td.green ●
-              td 72
-              td.yellow ●
-              td 36
-            tr
-              td 04-01:16
-              td.green ●
-              td 56
-              td.green ●
-              td 29
-            tr
-              td 04-01:15
-              td.green ●
-              td 51
-              td.green ●
-              td 27
-            tr
-              td 04-01:14
-              td.green ●
-              td 47
-              td.green ●
-              td 27
-            tr
-              td 04-01:13
-              td.green ●
-              td 38
-              td.green ●
-              td 23
-            tr
-              td 04-01:12
-              td.green ●
-              td 40
-              td.green ●
-              td 24
+            each map in datas
+              tr
+                td #{map.rgst_dt}
+                td.blue ●
+                td #{map.dust}
+                td.green ●
+                td #{map.ultrafine}
         .print-btn
           button.btn.btn-primary 인쇄  
 

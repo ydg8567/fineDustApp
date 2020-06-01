@@ -1,6 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var moment = require('moment');
+const express = require('express');
+const router = express.Router();
+const moment = require('moment');
+const connection = require("../connection");
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -8,24 +9,27 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/api/get/chartdata', function(req, res, next) {
-  res.send({today: moment().format('YYYY년 MM월 DD일 hh시'),
-                       dustHour: 33,
-                       dustDay: 31,
-                       ultrafineHour: 13,
-                       ultrafineDay: 11,
-                       data: 30, 
-                       lineGraphData: [
-                                        {'rgstDt': '2020-05-25 14:11:00', 'value': 25},
-                                        {'rgstDt': '2020-05-25 14:12:00', 'value': 35},
-                                        {'rgstDt': '2020-05-25 14:13:00', 'value': 45},
-                                        {'rgstDt': '2020-05-25 14:14:00', 'value': 35},
-                                        {'rgstDt': '2020-05-25 14:15:00', 'value': 25},
-                                        {'rgstDt': '2020-05-25 14:16:00', 'value': 35},
-                                        {'rgstDt': '2020-05-25 14:17:00', 'value': 45},
-                                        {'rgstDt': '2020-05-25 14:18:00', 'value': 35},
-                                        {'rgstDt': '2020-05-25 14:19:00', 'value': 25},
-                                        {'rgstDt': '2020-05-25 14:20:00', 'value': 35},
-                                      ]});
+  const query = `SELECT * FROM finedust_tb ORDER BY rgst_dt DESC LIMIT 10`;
+
+  connection.query(query, (err, rows, fields) => {
+    if (!err) {
+      res.send({
+                  today: moment().format('YYYY년 MM월 DD일 hh시'),
+                  dustHour: 33,
+                  dustDay: 31,
+                  ultrafineHour: 13,
+                  ultrafineDay: 11,
+                  data: rows[0].ultrafine, 
+                  lineGraphData: rows.map(data => {
+                    return {'rgstDt': moment(data.rgst_dt).format('YYYY-MM-DD hh:mm'), 'value': data.ultrafine}
+                  })
+                });
+    }
+    else {
+      console.log(err);
+      res.send(err);
+    }
+  })
 });
 
 module.exports = router;
