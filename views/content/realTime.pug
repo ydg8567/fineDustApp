@@ -70,7 +70,6 @@ link(rel='stylesheet', href='/css/realTime.css')
                   type: 'get', 
                   dataType : 'json', 
                   success: (result) => {
-                    console.log(result);
                     if(barChartData.datasets[0].data.length === 0) {
                       barChartData = {
                         labels: result.lineGraphData.map((d, index) => { return d.rgstDt }),
@@ -116,54 +115,56 @@ link(rel='stylesheet', href='/css/realTime.css')
               const createChart = () => {
                 const ctx = document.getElementById("chartPic").getContext('2d');
                 const chart = new Chart(ctx,  {
-                    type: 'doughnut',
-                    data: {
-                        datasets: [{
-                          data: [15, 25, 50, 15],
-                          backgroundColor: ["#24a6e1", "#24e124", "#dae124", "#e12424"],
-                          borderColor: ["#24a6e1", "#24e124", "#dae124", "#e12424"],
-                          borderWidth: 1
-                        }],
-                        labels: ['매우 좋음', '좋음', '나쁨', '매우 나쁨']
-                      },
-                    options: {
-                      cutoutPercentage: 65,
-                      circumference: Math.PI,
-                      rotation: -Math.PI,
-                      title: { 
-                        display: true,
-                        text: "PM2.5",
-                      },
-                      legend: {
-                        display: false
-                      },
-                    }
-                  });
+                  type: 'doughnut',
+                  data: {
+                      datasets: [{
+                        data: [15, 25, 50, 15],
+                        backgroundColor: ["#24a6e1", "#24e124", "#dae124", "#e12424"],
+                        borderColor: ["#24a6e1", "#24e124", "#dae124", "#e12424"],
+                        borderWidth: 1
+                      }],
+                      labels: ['매우 좋음', '좋음', '나쁨', '매우 나쁨']
+                    },
+                  options: {
+                    cutoutPercentage: 65,
+                    circumference: Math.PI,
+                    rotation: -Math.PI,
+                    title: { 
+                      display: true,
+                      text: "PM2.5",
+                    },
+                    legend: {
+                      display: false
+                    },
+                  }
+                });
                   
                 const ctx2 = document.getElementById("chartPic2").getContext('2d');
                 circleChart = new Chart(ctx2,  {
-                    type: 'bar',
-                    data: barChartData,
-                    options: {
-                      title: { 
-                        display: true,
-                        text: "PM2.5",
-                      },
-                      legend: {
-                        display: false
-                      },
-                      scales: {
-                        xAxes: [{
-                          ticks: {
-                            fontSize: 10
-                          }
-                        }],
-                        yAxes: [{
-                          ticks: {
-                            fontSize: 15
-                          }
-                        }]
-                      }
+                  type: 'bar',
+                  data: barChartData,
+                  options: {
+                    title: { 
+                      display: true,
+                      text: "PM2.5",
+                    },
+                    legend: {
+                      display: false
+                    },
+                    scales: {
+                      xAxes: [{
+                        ticks: {
+                          fontSize: 10
+                        }
+                      }],
+                      yAxes: [{
+                        ticks: {
+                          fontSize: 15,
+                          beginAtZero: true,
+                          suggestedMax: 20
+                        }
+                      }]
                     }
-                  });
+                  }
+                });
               }

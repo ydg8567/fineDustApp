@@ -4,15 +4,16 @@ block content
   link(rel='stylesheet', href='/css/info.css')
   script.
     $( function() {
-      $( "#startDate" ).datepicker({});
-      $( "#endDate" ).datepicker({});
+      $("#startDate").datepicker({});
+      $("#endDate").datepicker({});
     });
 
     const infoSearching = () => {
-      const form = document.getElementById('infoSearchForm');
+      const form =  document.getElementById("infoSearchForm");
       
       $.ajax({
         data: {
+          'time': $("[name=time]:checked").val(),
           'startDate': form.startDate.value,
           'startTime': form.startTime.value,
           'endDate': form.endDate.value,
@@ -39,10 +40,10 @@ block content
           .col-2 ■ 데이터 구분
           .col-10 
             label
-              input#time(type="radio", name="time", checked=true)
+              input#time(type="radio", name="time", value="13", checked=true)
               | 시간
             label
-              input#day(type="radio", name="time")
+              input#day(type="radio", name="time", value="10")
               | 일평균
         .row
           .col-2 ■ 조회기간
@@ -51,12 +52,12 @@ block content
               input#startDate(type="text", name="startDate", value="2020-04-24")
               select#startTime(name="startTime")
                 -for (let i = 1; i < 25; i++)
-                  option(value=i)= i
+                  option(value=i < 10 ? '0' + i : i)= i < 10 ? '0' + i : i
               |  
               input#endDate(type="text", name="endDate", value="2020-04-24")
               select#endTime(name="endTime")
                 -for (let i = 1; i < 25; i++)
-                  option(value=i)= i
+                  option(value=i < 10 ? '0' + i : i)= i < 10 ? '0' + i : i
             button.btn.btn-primary(onClick='infoSearching()') 검색
             //- button.btn.btn-primary 그래프보기
             //- button.btn.btn-primary 엑셀
@@ -76,9 +77,9 @@ block content
             each map in datas
               tr
                 td #{map.rgst_dt}
-                td.blue ●
+                td(class=map.dust > 33 ? "blue" : "green") ●
                 td #{map.dust}
-                td.green ●
+                td(class=map.ultrafine > 12 ? "blue" : "green") ●
                 td #{map.ultrafine}
         .print-btn
           button.btn.btn-primary 인쇄  

@@ -5,7 +5,12 @@ const connection = require("../connection");
 
 /* GET info page. */
 router.get('/', (req, res, next) => {
-  const query = `SELECT * FROM finedust_tb ORDER BY rgst_dt DESC LIMIT 30`;
+  const query = `
+    SELECT MAX(dust) AS dust, MAX(ultrafine) AS ultrafine, rgst_dt 
+    FROM finedust_tb 
+    GROUP BY SUBSTR(rgst_dt, 1, 13) 
+    ORDER BY rgst_dt DESC LIMIT 30
+  `;
 
   connection.query(query, (err, rows, fields) => {
     if (!err) {
@@ -26,7 +31,17 @@ router.get('/', (req, res, next) => {
 })
 
 router.get('/api/search', (req, res, next) => {
-  const query = `SELECT * FROM finedust_tb ORDER BY rgst_dt DESC LIMIT 30`;
+  const params = req.query;
+  const start = moment(`${params.startDate}T${params.startTime}:00:00+00:00`).format('YYYY-MM-DD hh:mm:ss');
+  const end = moment(`${params.endDate}T${params.endTime}:00:00+00:00`).format('YYYY-MM-DD hh:mm:ss');
+  
+  const query = `
+    SELECT MAX(dust) AS dust, MAX(ultrafine) AS ultrafine, rgst_dt 
+    FROM finedust_tb WHERE rgst_dt >= '${start}' AND rgst_dt <= '${end}' 
+    GROUP BY SUBSTR(rgst_dt, 1, ${params.time}) 
+    ORDER BY rgst_dt DESC 
+    LIMIT 30
+  `;
 
   connection.query(query, (err, rows, fields) => {
     if (!err) {
@@ -35,11 +50,11 @@ router.get('/api/search', (req, res, next) => {
       rows.forEach(data => {
         const html = `
           <tr>
-            <td>${data.log_idx}</td>
-            <td>${data.A1}</td>
-            <td>${data.temperature}</td>
-            <td>${data.freqeuncy}</td>
-            <td>${data.rgst_dt}</td>
+            <td>${moment(data.rgst_dt).format(params.time === '13' ? 'MM-DD:hh' : 'MM-DD')}</td>
+            <td class="${data.dust > 33 ? 'green' : 'blue'}">●</td>
+            <td>${data.dust}</td>
+            <td class="${data.ultrafine > 12 ? 'green' : 'blue'}">●</td>
+            <td>${data.ultrafine}</td>
           </tr>
         `
         result += html;
