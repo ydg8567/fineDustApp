@@ -1,32 +1,31 @@
-// {
-//   deviceId: '',
-//   windSpeed: '',
-//   temperature: '',
-//   dust: '',
-//   ultrafine: '',
-//   dustB: '',
-//   dustC: '',
-//   dustD: '',
-//   rgstDt: ''
-// }
-
 const net_server = require('net');
 const connection = require("./connection");
+const moment = require('moment');
  
 const server = net_server.createServer((client) => {
   console.log('Client connection: ');
   console.log('   local = %s:%s', client.localAddress, client.localPort);
   console.log('   remote = %s:%s', client.remoteAddress, client.remotePort);
   
-  client.setTimeout(500);
+  client.setTimeout(2000);
   client.setEncoding('utf8');
-  
+
   client.on('data', (data) => {
-    console.log('Received data from client on port %d: %s', client.remotePort, data.toString());
+    console.log(`Socket Data : ${data.toString()}`);
+    const receiveDataFormatJson = JSON.parse(data.toString());
+    const today = moment().format('YYYY-MM-DD hh:mm:ss');
     
-    const json = JSON.parse(data);
-    const query = `INSERT INTO finedust_tb(device_id, wind_speed, temperature, dust, ultrafine, dustB, dustC, dustD, rgst_dt) VALUES 
-                   (${json.deviceId}, ${json.windSpeed}, ${json.temperature}, ${json.dust}, ${json.ultrafine}, ${json.dustB}, ${json.dustC}, ${json.dustD}, "${json.rgstDt}")`;
+    const query = `INSERT INTO finedust_tb(deviceId, windSpeed, windDirection, temperature, humidity, PM1_0, PM2_5, PM4_0, PM10_0, rgst_dt) VALUES 
+                   ('${receiveDataFormatJson.deviceId}', 
+                    '${receiveDataFormatJson.windSpeed}', 
+                    ${receiveDataFormatJson.windDirection}, 
+                    ${receiveDataFormatJson.temperature}, 
+                    ${receiveDataFormatJson.humidity}, 
+                    ${receiveDataFormatJson['PM1.0']}, 
+                    ${receiveDataFormatJson['PM2.5']}, 
+                    ${receiveDataFormatJson['PM4.0']}, 
+                    ${receiveDataFormatJson['PM10.0']}, 
+                    '${today}')`;
 
     connection.query(query, (err, rows, fields) => {
       if (err) {
@@ -44,15 +43,8 @@ const server = net_server.createServer((client) => {
   });
   
   client.on('timeout', () => {
-    console.log('Socket Timed out');
+    console.log(`Socket Timed out`);
   });
 });
-
-const writeData = (socket, data) => {
-  const success = socket.write(data);
-  if (!success){
-    console.log("Client Send Fail");
-  }
-}
 
 module.exports = server;
