@@ -6,7 +6,7 @@ const connection = require("../connection");
 /* GET info page. */
 router.get('/', (req, res, next) => {
   const query = `
-    SELECT MAX(dust) AS dust, MAX(ultrafine) AS ultrafine, rgst_dt 
+    SELECT MAX(pm10_0) AS dust, MAX(pm2_5) AS ultrafine, rgst_dt 
     FROM finedust_tb 
     GROUP BY SUBSTR(rgst_dt, 1, 13) 
     ORDER BY rgst_dt DESC LIMIT 30
@@ -36,7 +36,7 @@ router.get('/api/search', (req, res, next) => {
   const end = moment(`${params.endDate}T${params.endTime}:00:00+00:00`).format('YYYY-MM-DD hh:mm:ss');
   
   const query = `
-    SELECT MAX(dust) AS dust, MAX(ultrafine) AS ultrafine, rgst_dt 
+    SELECT MAX(pm10_0) AS dust, MAX(pm2_5) AS ultrafine, rgst_dt 
     FROM finedust_tb WHERE rgst_dt >= '${start}' AND rgst_dt <= '${end}' 
     GROUP BY SUBSTR(rgst_dt, 1, ${params.time}) 
     ORDER BY rgst_dt DESC 
