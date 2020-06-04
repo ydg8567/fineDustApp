@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "build": "pkg ."
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -14,5 +15,18 @@
     "morgan": "~1.9.1",
     "mysql": "^2.18.1",
     "pug": "2.0.0-beta11"
+  },
+  "bin": { 
+    "app": "./bin/www" 
+  },
+  "pkg": { 
+    "assets": [ 
+      "views/**/*", 
+      "public/**/*",
+      "servers/**/*"  
+    ] 
+  },
+  "devDependencies": {
+    "pkg": "^4.4.8"
   }
 }
