@@ -97,6 +97,12 @@
   -webkit-text-stroke: 1px black;
 }
 
+#info-container #info-table td.red {
+  font-size: 20px;
+  color: #ff1414;
+  -webkit-text-stroke: 1px black;
+}
+
 #info-container #info-table th, #info-container #info-table td {
   border: 1px solid #000;
   width: 204px;

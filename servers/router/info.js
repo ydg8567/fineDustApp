@@ -3,6 +3,42 @@ const router = express.Router();
 const moment = require('moment');
 const connection = require("../connection");
 
+const getDustStatus = (value) => {
+  if (value <= 30) {
+    return 'blue'
+  } 
+  else if (value > 30 && value <= 80) {
+    return 'green'
+  }
+  else if (value > 80 && value <= 150) {
+    return 'yellow'
+  }
+  else if (value > 150 && value <= 600) {
+    return 'red'
+  }
+  else {
+    return 'blue'
+  }
+}
+
+const getUltraFineDustStatus = (value) => {
+  if (value <= 15) {
+    return 'blue'
+  } 
+  else if (value > 15 && value <= 35) {
+    return 'green'
+  }
+  else if (value > 35 && value <= 75) {
+    return 'yellow'
+  }
+  else if (value > 75 && value <= 500) {
+    return 'red'
+  }
+  else {
+    return 'blue'
+  }
+}
+
 /* GET info page. */
 router.get('/', (req, res, next) => {
   const query = `
@@ -17,7 +53,9 @@ router.get('/', (req, res, next) => {
       res.render('content/info', {'datas': rows.map(data => {
                                             return {
                                               dust: data.dust,
+                                              dustStatus: getDustStatus(data.dust),
                                               ultrafine: data.ultrafine,
+                                              ultrafineStatus: getUltraFineDustStatus(data.ultrafine),
                                               rgst_dt: moment(data.rgst_dt).format('MM-DD:hh')
                                             }
                                           })
@@ -51,9 +89,9 @@ router.get('/api/search', (req, res, next) => {
         const html = `
           <tr>
             <td>${moment(data.rgst_dt).format(params.time === '13' ? 'MM-DD:hh' : 'MM-DD')}</td>
-            <td class="${data.dust > 33 ? 'green' : 'blue'}">●</td>
+            <td class="${getDustStatus(data.dust)}">●</td>
             <td>${data.dust}</td>
-            <td class="${data.ultrafine > 12 ? 'green' : 'blue'}">●</td>
+            <td class="${getUltraFineDustStatus(data.ultrafine)}">●</td>
             <td>${data.ultrafine}</td>
           </tr>
         `

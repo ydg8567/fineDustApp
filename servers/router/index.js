@@ -8,9 +8,27 @@ router.get('/', function(req, res, next) {
   res.render('index');
 });
 
+const getUltraFineDustStatus = (value) => {
+  if (value <= 15) {
+    return '#187FCC'
+  } 
+  else if (value > 15 && value <= 35) {
+    return '#8EC641'
+  }
+  else if (value > 35 && value <= 75) {
+    return '#FFD014'
+  }
+  else if (value > 75 && value <= 500) {
+    return '#ff1414'
+  }
+  else {
+    return '#187FCC'
+  }
+}
+
 router.get('/api/get/chartdata', function(req, res, next) {
   const query = `
-    SELECT MAX(pm2_5) AS dust, rgst_dt
+    SELECT MAX(pm2_5) AS ultrafine, rgst_dt
     FROM finedust_tb 
     GROUP BY SUBSTR(rgst_dt, 1, 13)
     ORDER BY rgst_dt DESC 
@@ -19,9 +37,9 @@ router.get('/api/get/chartdata', function(req, res, next) {
   connection.query(query, (err, rows, fields) => {
     if (!err) {
       res.send(rows.length > 0 ? {
-        data: rows[0].dust, 
+        data: rows[0].ultrafine, 
         lineGraphData: rows.map(data => {
-          return {'rgstDt': moment(data.rgst_dt).format('MM-DD hh'), 'value': data.dust}
+          return {'rgstDt': moment(data.rgst_dt).format('MM-DD hh'), 'value': data.ultrafine, 'status': getUltraFineDustStatus(data.ultrafine)}
         })
       } : {});
     }
@@ -74,17 +92,6 @@ router.get('/api/get/pm/now', function(req, res, next) {
       res.send(err);
     }
   })
-
-  // connection.query(queryForToday, (err, rows, fields) => {
-  //   if (!err) {
-  //     result.set('ultrafineDay', rows.pm10_0)
-  //     result.set('dustDay', rows.pm10_0)
-  //   }
-  //   else {
-  //     console.log(err);
-  //     res.send(err);
-  //   }
-  // })
 });
 
 module.exports = router;

@@ -77,9 +77,9 @@ block content
             each map in datas
               tr
                 td #{map.rgst_dt}
-                td(class=map.dust > 33 ? "blue" : "green") ●
+                td(class=map.dustStatus) ●
                 td #{map.dust}
-                td(class=map.ultrafine > 12 ? "blue" : "green") ●
+                td(class=map.ultrafineStatus) ●
                 td #{map.ultrafine}
         //- .print-btn
         //-   button.btn.btn-primary 인쇄  

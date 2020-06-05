@@ -50,7 +50,7 @@ link(rel='stylesheet', href='/css/realTime.css')
                         datasets: [{
                           label: 'PM2.5',
                           data: [].map(d => { return d.value }),
-                          backgroundColor: [].map(d => { if(d.value > 35) { return "#DAE124" } else {return "#24A6E1"} }),
+                          backgroundColor: [].map(d => { return d.status }),
                         }]
                       }
               let barChart;
@@ -102,7 +102,7 @@ link(rel='stylesheet', href='/css/realTime.css')
                       datasets: [{
                         label: 'PM2.5',
                         data: result.lineGraphData.map(d => { return d.value }),
-                        backgroundColor: result.lineGraphData.map(d => { if(d.value > 35) { return "#DAE124" } else {return "#24A6E1"} }),
+                        backgroundColor: result.lineGraphData.map(d => { return d.status }),
                       }]
                     }
 
@@ -125,7 +125,7 @@ link(rel='stylesheet', href='/css/realTime.css')
                   type: 'doughnut',
                   data: {
                       datasets: [{
-                        data: [15, 25, 50, 15],
+                        data: [15, 20, 40, 25],
                         backgroundColor: ["#24a6e1", "#24e124", "#dae124", "#e12424"],
                         borderColor: ["#24a6e1", "#24e124", "#dae124", "#e12424"],
                         borderWidth: 1
