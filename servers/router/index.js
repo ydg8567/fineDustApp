@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
 
 router.get('/api/get/chartdata', function(req, res, next) {
   const query = `
-    SELECT MAX(pm2_5) AS PM2_5, rgst_dt
+    SELECT MAX(pm2_5) AS dust, rgst_dt
     FROM finedust_tb 
     GROUP BY SUBSTR(rgst_dt, 1, 13)
     ORDER BY rgst_dt DESC 
@@ -18,12 +18,12 @@ router.get('/api/get/chartdata', function(req, res, next) {
 
   connection.query(query, (err, rows, fields) => {
     if (!err) {
-      res.send({
-        data: rows[0].PM2_5, 
+      res.send(rows.length > 0 ? {
+        data: rows[0].dust, 
         lineGraphData: rows.map(data => {
-          return {'rgstDt': moment(data.rgst_dt).format('MM-DD hh'), 'value': data.PM2_5}
+          return {'rgstDt': moment(data.rgst_dt).format('MM-DD hh'), 'value': data.dust}
         })
-      });
+      } : {});
     }
     else {
       console.log(err);
