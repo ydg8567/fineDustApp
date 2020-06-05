@@ -9,7 +9,9 @@ const indexRouter = require('./servers/router/index');
 const infoRouter = require('./servers/router/info');
 
 const app = express();
+const config = require('./config.json')[app.get('env')];
 
+app.set('config', config);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
