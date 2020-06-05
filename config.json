@@ -1,0 +1,17 @@
+{
+	"development": {
+		"host": "112.185.161.246",
+    "port": 23306,
+    "user": "root",
+    "password": "ubimicro",
+    "database": "finedust"
+	},
+
+	"production": {
+		"host": "112.185.161.246",
+    "port": 23306,
+    "user": "root",
+    "password": "ubimicro",
+    "database": "finedust"
+	}
+}
