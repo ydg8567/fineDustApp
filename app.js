@@ -7,6 +7,7 @@ const server = require('./servers/server');
 
 const indexRouter = require('./servers/router/index');
 const infoRouter = require('./servers/router/info');
+const supportRouter = require('./servers/router/support');
 
 const app = express();
 const config = require('./config.json')[app.get('env')];
@@ -24,6 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/info', infoRouter);
+app.use('/support', supportRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
