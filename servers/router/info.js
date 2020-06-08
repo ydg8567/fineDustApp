@@ -72,8 +72,8 @@ router.get('/', (req, res, next) => {
 
 router.get('/api/search', (req, res, next) => {
   const params = req.query;
-  const start = moment(`${params.startDate}T${params.startTime}:00:00+00:00`).format('YYYY-MM-DD hh:mm:ss');
-  const end = moment(`${params.endDate}T${params.endTime}:00:00+00:00`).format('YYYY-MM-DD hh:mm:ss');
+  const start = `${params.startDate} ${params.startTime}:00:00`;
+  const end = `${params.endDate} ${params.endTime}:00:00`;
   
   const query = `
     SELECT MAX(pm10_0) AS dust, MAX(pm2_5) AS ultrafine, AVG(windDirection) AS windDirection, ROUND(AVG(substr(windSpeed, 1, 3)), 2) AS windSpeed, rgst_dt 

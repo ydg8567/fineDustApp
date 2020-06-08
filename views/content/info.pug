@@ -4,8 +4,8 @@ block content
   link(rel='stylesheet', href='/css/info.css')
   script.
     $( function() {
-      $("#startDate").datepicker({});
-      $("#endDate").datepicker({});
+      $("#startDate").datepicker({defaultDate: new Date()}).val(moment().format('YYYY-MM-DD'));
+      $("#endDate").datepicker({defaultDate: new Date()}).val(moment().format('YYYY-MM-DD'));
     });
 
     const infoSearching = () => {
@@ -49,12 +49,12 @@ block content
           .col-2 ■ 조회기간
           .col-10 
             form#infoSearchForm(name="infoSearchForm", method="get")
-              input#startDate(type="text", name="startDate", value="2020-04-24")
+              input#startDate(type="text", name="startDate")
               select#startTime(name="startTime")
                 -for (let i = 1; i < 25; i++)
                   option(value=i < 10 ? '0' + i : i)= i < 10 ? '0' + i : i
               |  
-              input#endDate(type="text", name="endDate", value="2020-04-24")
+              input#endDate(type="text", name="endDate")
               select#endTime(name="endTime")
                 -for (let i = 1; i < 25; i++)
                   option(value=i < 10 ? '0' + i : i)= i < 10 ? '0' + i : i
