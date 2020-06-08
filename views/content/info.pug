@@ -9,6 +9,13 @@ block content
     });
 
     const infoSearching = () => {
+      search();
+      window.setInterval(() => {
+        search();
+      }, 10000);
+    }
+
+    const search = () => {
       const form =  document.getElementById("infoSearchForm");
       
       $.ajax({
@@ -45,6 +52,9 @@ block content
             label
               input#day(type="radio", name="time", value="10")
               | 일평균
+            label
+              input#day(type="radio", name="time", value="18")
+              | 초당 데이터
         .row
           .col-2 ■ 조회기간
           .col-10 
