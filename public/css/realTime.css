@@ -117,6 +117,10 @@
   font-weight: bold;
 }
 
+#realTime-container #dust-value-table td#dust-hour-icon, #realTime-container #dust-value-table td#ultrafine-hour-icon {
+  font-size: 30px;
+}
+
 @media (max-width: 1800px) {
   #realTime-container div.infoBox div.info div.info-circle-chart div#pm2-5-circle-text {
     display: none;

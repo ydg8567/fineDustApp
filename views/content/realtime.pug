@@ -31,12 +31,12 @@ link(rel='stylesheet', href='/css/realTime.css')
                 th 측정값
             tbody
               tr
-                td.legend(rowspan="2") 초미세먼지(PM<sub>2.5</sub>)
-                td(rowspan="2") ㅇ
-                td#ultrafine-hour
                 td.legend(rowspan="2") 미세먼지(PM<sub>10</sub>)
-                td(rowspan="2") ㅇ
+                td#dust-hour-icon(rowspan="2") ●
                 td#dust-hour
+                td.legend(rowspan="2") 초미세먼지(PM<sub>2.5</sub>)
+                td#ultrafine-hour-icon(rowspan="2") ●
+                td#ultrafine-hour
               tr
                 td#ultrafine-day
                 td#dust-day
@@ -80,6 +80,8 @@ link(rel='stylesheet', href='/css/realTime.css')
                     $("#circle-chart-ultrafine-hour").text(`● 1시간: ${nvl(result.ultrafineHour)}ug/m²`);
                     $("#circle-chart-ultrafine-day").text(`● 24시간: ${nvl(result.ultrafineDay)}ug/m²`);
 
+                    $("#dust-hour-icon").css("color", result.dustStatus);
+                    $("#ultrafine-hour-icon").css("color", result.ultrafineStatus);
                     $("#ultrafine-hour").text(`${nvl(result.ultrafineHour)}㎍/㎥(1h)`);
                     $("#dust-hour").text(`${nvl(result.dustHour)}㎍/㎥(1h)`);
                     $("#ultrafine-day").text(`${nvl(result.ultrafineDay)}㎍/㎥(24h)`);

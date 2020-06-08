@@ -8,6 +8,24 @@ router.get('/', function(req, res, next) {
   res.render('index');
 });
 
+const getDustStatus = (value) => {
+  if (value <= 30) {
+    return '#187FCC'
+  } 
+  else if (value > 30 && value <= 80) {
+    return '#8EC641'
+  }
+  else if (value > 80 && value <= 150) {
+    return '#FFD014'
+  }
+  else if (value > 150 && value <= 600) {
+    return '#ff1414'
+  }
+  else {
+    return '#187FCC'
+  }
+}
+
 const getUltraFineDustStatus = (value) => {
   if (value <= 15) {
     return '#187FCC'
@@ -78,6 +96,8 @@ router.get('/api/get/pm/now', function(req, res, next) {
           res.send({
             ...rowsForHour,
             ...rowsForToday,
+            dustStatus: getDustStatus(rowsForHour.dustHour),
+            ultrafineStatus: getUltraFineDustStatus(rowsForHour.ultrafine),
             today: moment().format('YYYY년 MM월 DD일 hh시')
           });
         }
