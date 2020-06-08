@@ -70,6 +70,8 @@ block content
               th(rowspan="2") 날짜<br/>(월-일-시)
               th(colspan="2") PM<pre>10</pre><br/>(㎍/㎥)
               th(colspan="2") PM<pre>2.5</pre><br>(㎍/㎥)
+              th(rowspan="2") 풍향
+              th(rowspan="2") 풍속(m/s)
             tr
               th(colspan="2") 1시간
               th(colspan="2") 1시간
@@ -81,6 +83,9 @@ block content
                 td #{map.dust}
                 td(class=map.ultrafineStatus) ●
                 td #{map.ultrafine}
+                td 
+                  img.wind-direction-icon(src="images/arrow-icon.png", alt="wind-direction" style={ width: '40px', transform: `rotate(${map.windDirection}deg)`})
+                td #{map.windSpeed} (m/s)
         //- .print-btn
         //-   button.btn.btn-primary 인쇄  
 
