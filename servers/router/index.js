@@ -8,6 +8,10 @@ router.get('/', function(req, res, next) {
   res.render('index');
 });
 
+const nvl = (value) => {
+  return (value === null || value === void 0) ? 0 : value;
+}
+
 const getDustStatus = (value) => {
   if (value <= 30) {
     return '#187FCC'
@@ -97,8 +101,8 @@ router.get('/api/get/pm/now', function(req, res, next) {
           res.send({
             ...rowsForHour,
             ...rowsForToday,
-            dustStatus: getDustStatus(rowsForHour.dustHour),
-            ultrafineStatus: getUltraFineDustStatus(rowsForHour.ultrafine),
+            dustStatus: getDustStatus(nvl(rowsForHour) !== 0 && rowsForHour.length > 0 ? rowsForHour.dustHour : 0),
+            ultrafineStatus: getUltraFineDustStatus(nvl(rowsForHour) !== 0 && rowsForHour.length > 0 ? rowsForHour.ultrafine : 0),
             today: moment().format('YYYY년 MM월 DD일 hh시')
           });
         }
