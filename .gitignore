@@ -55,3 +55,6 @@ build/
 
 ### build file ###
 fineduststatusapp-*
+
+### psd file ###
+*.psd
