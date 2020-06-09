@@ -13,7 +13,7 @@ const server = net_server.createServer((client) => {
   client.on('data', (data) => {
     console.log(`Socket Data : ${data.toString()}`);
     const receiveDataFormatJson = JSON.parse(data.toString());
-    const today = moment().format('YYYY-MM-DD hh:mm:ss');
+    const today = moment().format('YYYY-MM-DD HH:mm:ss');
     
     const query = `INSERT INTO finedust_tb(deviceId, windSpeed, windDirection, temperature, humidity, PM1_0, PM2_5, PM4_0, PM10_0, rgst_dt) VALUES 
                    ('${receiveDataFormatJson.deviceId}', 

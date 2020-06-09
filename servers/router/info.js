@@ -42,7 +42,13 @@ const getUltraFineDustStatus = (value) => {
 /* GET info page. */
 router.get('/', (req, res, next) => {
   const query = `
-    SELECT MAX(pm10_0) AS dust, MAX(pm2_5) AS ultrafine, AVG(windDirection) AS windDirection, ROUND(AVG(substr(windSpeed, 1, 3)), 2) AS windSpeed, rgst_dt 
+    SELECT MAX(pm10_0) AS dust, 
+           MAX(pm2_5) AS ultrafine, 
+           AVG(windDirection) AS windDirection, 
+           ROUND(AVG(substr(windSpeed, 1, 3)), 2) AS windSpeed, 
+           ROUND(AVG(temperature), 1) As temperature,
+           ROUND(AVG(humidity), 1) AS humidity,
+           rgst_dt 
     FROM finedust_tb 
     GROUP BY SUBSTR(rgst_dt, 1, 13) 
     ORDER BY rgst_dt DESC LIMIT 30
@@ -58,6 +64,8 @@ router.get('/', (req, res, next) => {
                                               ultrafineStatus: getUltraFineDustStatus(data.ultrafine),
                                               windDirection: data.windDirection,
                                               windSpeed: data.windSpeed,
+                                              temperature: data.temperature,
+                                              humidity: data.humidity,
                                               rgst_dt: moment(data.rgst_dt).format('MM-DD:hh')
                                             }
                                           })
@@ -76,7 +84,13 @@ router.get('/api/search', (req, res, next) => {
   const end = `${params.endDate} ${params.endTime}:00:00`;
   
   const query = `
-    SELECT MAX(pm10_0) AS dust, MAX(pm2_5) AS ultrafine, AVG(windDirection) AS windDirection, ROUND(AVG(substr(windSpeed, 1, 3)), 2) AS windSpeed, rgst_dt 
+    SELECT MAX(pm10_0) AS dust, 
+           MAX(pm2_5) AS ultrafine, 
+           AVG(windDirection) AS windDirection, 
+           ROUND(AVG(substr(windSpeed, 1, 3)), 2) AS windSpeed, 
+           ROUND(AVG(temperature), 1) As temperature,
+           ROUND(AVG(humidity), 1) AS humidity,
+           rgst_dt 
     FROM finedust_tb WHERE rgst_dt >= '${start}' AND rgst_dt <= '${end}' 
     GROUP BY SUBSTR(rgst_dt, 1, ${params.time}) 
     ORDER BY rgst_dt DESC 
@@ -97,6 +111,8 @@ router.get('/api/search', (req, res, next) => {
             <td>${data.ultrafine}</td>
             <td>${data.windDirection}</td>
             <td>${data.windSpeed} (m/s)</td>
+            <td>${data.temperature} °C</td>
+            <td>${data.humidity} %</td>
           </tr>
         `
         result += html;

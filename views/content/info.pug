@@ -82,6 +82,8 @@ block content
               th(colspan="2") PM<pre>2.5</pre><br>(㎍/㎥)
               th(rowspan="2") 풍향
               th(rowspan="2") 풍속(m/s)
+              th(rowspan="2") 온도
+              th(rowspan="2") 습도
             tr
               th(colspan="2") 1시간
               th(colspan="2") 1시간
@@ -96,6 +98,8 @@ block content
                 td 
                   img.wind-direction-icon(src="images/arrow-icon.png", alt="wind-direction" style={ width: '40px', transform: `rotate(${map.windDirection}deg)`})
                 td #{map.windSpeed} (m/s)
+                td #{map.temperature} °C
+                td #{map.humidity} %
         //- .print-btn
         //-   button.btn.btn-primary 인쇄  
 
