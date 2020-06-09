@@ -49,7 +49,7 @@ router.get('/api/get/chartdata', function(req, res, next) {
     SELECT MAX(pm10_0) AS dust, MAX(pm2_5) AS ultrafine, rgst_dt
     FROM finedust_tb 
     GROUP BY SUBSTR(rgst_dt, 1, 13)
-    ORDER BY rgst_dt DESC 
+    ORDER BY rgst_dt ASC 
     LIMIT 10`;
 
   connection.query(query, (err, rows, fields) => {
