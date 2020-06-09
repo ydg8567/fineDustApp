@@ -54,26 +54,52 @@
 #realTime-container div.infoBox div.info div.info-circle-chart {
   border: 1px solid #045586;
   height: 200px;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   overflow: hidden;
 }
 
 #realTime-container div.infoBox div.info div.info-circle-chart div#pm2-5-circle {
   position: relative;
-  min-width: 460px;
-  height: 198px;
+  width: 265px;
+  height: 160px;
+  margin: 0px 10px;
 }
 
-#realTime-container div.infoBox div.info div.info-circle-chart div#pm2-5-circle div#circle-chart-needle {
+#realTime-container div.infoBox div.info div.info-circle-chart div#pm2-5-circle div#dust-circle-chart-text {
+  position: absolute;
+  left: 0px;
+  top: 25px;
+  width: 265px;
+  height: 265px;
+  overflow: hidden;
+  background-image: url('/images/dust_circle_chart_text.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+#realTime-container div.infoBox div.info div.info-circle-chart div#pm2-5-circle div#ultrafine-circle-chart-text {
+  position: absolute;
+  left: 0px;
+  top: 27px;
+  width: 265px;
+  height: 265px;
+  overflow: hidden;
+  background-image: url('/images/ultrafine_circle_chart_text.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+#realTime-container div.infoBox div.info div.info-circle-chart div#pm2-5-circle div.circle-chart-needle {
   position: absolute;
   transform: rotate(-90deg);
-  left: 0px;
-  top: 0px;
-  width: 460px;
-  height: 404px;
+  left: 5px;
+  top: 34px;
+  width: 255px;
+  height: 255px;
   overflow: hidden;
   background-image: url('/images/pm2_circle_chart_needle.png');
+  background-size: contain;
   background-repeat: no-repeat;
 }
 
@@ -124,6 +150,43 @@
 @media (max-width: 1800px) {
   #realTime-container div.infoBox div.info div.info-circle-chart div#pm2-5-circle-text {
     display: none;
+  }
+}
+
+@media (min-width: 1300px) and (max-width: 1580px), (max-width: 700px) {
+  #realTime-container div.infoBox div.info div.info-circle-chart {
+    border: 0px solid #045586;
+    height: 350px;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  #realTime-container div.infoBox div.info div.info-circle-chart div#pm2-5-circle {
+    position: relative;
+    width: 560px;
+    height: 173px;
+    border: 1px solid black;
+    overflow: hidden;
+  }
+
+  #realTime-container div.infoBox div.info div.info-circle-chart .small-window-chart-container {
+    width: 285px;
+    margin: 0px auto;
+    position: relative;
+  }
+
+  #realTime-container div.infoBox div.info div.info-circle-chart div#pm2-5-circle div.circle-chart-needle {
+    left: 16px;
+    top: 44px;
+  }
+
+  #realTime-container div.infoBox div.info div.info-circle-chart div#pm2-5-circle div#dust-circle-chart-text,
+  #realTime-container div.infoBox div.info div.info-circle-chart div#pm2-5-circle div#ultrafine-circle-chart-text {
+    left: -4px;
+    top: 23px;
+    width: 295px;
+    background-size: cover;
   }
 }
 

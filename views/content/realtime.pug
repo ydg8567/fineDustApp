@@ -12,13 +12,16 @@ link(rel='stylesheet', href='/css/realTime.css')
         .row
           .col-12 동구 을(를) 중심으로 측정한 대기질정보
         .row.info-circle-chart
-          #pm2-5-circle
-            canvas(id="chartPic" width="400" height="176")
-            div#circle-chart-needle
-          #pm2-5-circle-text
-            div#circle-chart-today 
-            div#circle-chart-ultrafine-hour
-            div#circle-chart-ultrafine-day
+          #pm2-5-circle(onClick="getChartData('dust')")
+            div.small-window-chart-container
+              canvas(id="chartPic" width="265" height="161" style={ margin: '0px auto' })
+              div#dust-circle-chart-text
+              div.circle-chart-needle#dust-circle-chart-needle
+          #pm2-5-circle(onClick="getChartData('ultrafine')")
+            div.small-window-chart-container
+              canvas(id="chartPic2" width="265" height="161" style={ margin: '0px auto' })
+              div#ultrafine-circle-chart-text
+              div.circle-chart-needle#ultrafine-circle-chart-needle
         .row
           table#dust-value-table
             thead
@@ -42,7 +45,7 @@ link(rel='stylesheet', href='/css/realTime.css')
                 td#dust-day
         .row.info-line-chart
           #pm2-5-chart.col-12   
-            canvas(id="chartPic2" width="400" height="176")
+            canvas(id="barChart" width="400" height="176")
             script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js")
             script(type='text/javascript').
               let barChartData = {
@@ -53,17 +56,13 @@ link(rel='stylesheet', href='/css/realTime.css')
                           backgroundColor: [].map(d => { return d.status }),
                         }]
                       }
+              
               let barChart;
-              let circleChart;
+              let ajaxInterval;
 
               $(document).ready(() => {
-                getChartData();
+                getChartData('dust');
                 getPmNowData();
-
-                window.setInterval(() => {
-                  getChartData();
-                  getPmNowData();
-                }, 100000);
               });
 
               const nvl = (value) => {
@@ -76,10 +75,6 @@ link(rel='stylesheet', href='/css/realTime.css')
                   type: 'get', 
                   dataType : 'json', 
                   success: (result) => {
-                    $("#circle-chart-today").text(result.today);
-                    $("#circle-chart-ultrafine-hour").text(`● 1시간: ${nvl(result.ultrafineHour)}ug/m²`);
-                    $("#circle-chart-ultrafine-day").text(`● 24시간: ${nvl(result.ultrafineDay)}ug/m²`);
-
                     $("#dust-hour-icon").css("color", result.dustStatus);
                     $("#ultrafine-hour-icon").css("color", result.ultrafineStatus);
                     $("#ultrafine-hour").text(`${nvl(result.ultrafineHour)}㎍/㎥(1h)`);
@@ -93,46 +88,59 @@ link(rel='stylesheet', href='/css/realTime.css')
                 })
               }
 
-              const getChartData = () => {
+              const getChartData = (type) => {
+                window.clearInterval(ajaxInterval);
+
                 $.ajax({
                   url: "/api/get/chartdata", 
                   type: 'get', 
                   dataType : 'json', 
                   success: (result) => {
+                    const title = type === 'dust' ? '미세먼지 (PM10)' : '초미세먼지 (PM2.5)';
+
                     barChartData = {
                       labels: result.lineGraphData.map((d, index) => { return d.rgstDt }),
                       datasets: [{
-                        label: 'PM2.5',
-                        data: result.lineGraphData.map(d => { return d.value }),
+                        label: title,
+                        data: result.lineGraphData.map(d => { return d[type] }),
                         backgroundColor: result.lineGraphData.map(d => { return d.status }),
                       }]
                     }
 
-                    if(nvl(barChart) === 0 || nvl(circleChart) === 0) {
+                    if(nvl(barChart) === 0) {
                       createChart(result);
                     }
                     
-                    document.querySelector("#circle-chart-needle").style.transform = `rotate(${(180 * result.data / 100) + -90}deg)`;
-                    circleChart.update();
+                    document.querySelector("#dust-circle-chart-needle").style.transform = `rotate(${(180 * result.dustData / 100) + -90}deg)`;
+                    document.querySelector("#ultrafine-circle-chart-needle").style.transform = `rotate(${(180 * result.ultrafineData / 100) + -90}deg)`;
+                    
+                    barChart.data = barChartData;
+                    barChart.options.title.text = title;
+                    barChart.update();
                   },
                   error: (err) => {
                     console.log(err);
                   }
                 })
+
+                ajaxInterval = window.setInterval(() => {
+                  getChartData(type);
+                  getPmNowData();
+                }, 100000);
               }
 
               const createChart = () => {
                 const ctx = document.getElementById("chartPic").getContext('2d');
-                barChart = new Chart(ctx,  {
+                const circleChartByUltrafine = new Chart(ctx, {
                   type: 'doughnut',
                   data: {
                       datasets: [{
-                        data: [15, 20, 40, 25],
-                        backgroundColor: ["#24a6e1", "#24e124", "#dae124", "#e12424"],
-                        borderColor: ["#24a6e1", "#24e124", "#dae124", "#e12424"],
+                        data: [15, 25, 35, 25],
+                        backgroundColor: ["#2359C4", "#01B56E", "#F5C932", "#DA3539"],
+                        borderColor: ["#2359C4", "#01B56E", "#F5C932", "#DA3539"],
                         borderWidth: 1
                       }],
-                      labels: ['매우 좋음', '좋음', '나쁨', '매우 나쁨']
+                      labels: ['좋음', '보통', '나쁨', '매우 나쁨']
                     },
                   options: {
                     cutoutPercentage: 65,
@@ -140,22 +148,50 @@ link(rel='stylesheet', href='/css/realTime.css')
                     rotation: -Math.PI,
                     title: { 
                       display: true,
-                      text: "PM2.5",
+                      text: "미세먼지 (PM10)",
                     },
                     legend: {
                       display: false
                     },
                   }
                 });
-                  
+
                 const ctx2 = document.getElementById("chartPic2").getContext('2d');
-                circleChart = new Chart(ctx2,  {
+                const circleChartByDust = new Chart(ctx2, {
+                  type: 'doughnut',
+                  data: {
+                      datasets: [{
+                        data: [15, 20, 40, 25],
+                        backgroundColor: ["#2359C4", "#01B56E", "#F5C932", "#DA3539"],
+                        borderColor: ["#2359C4", "#01B56E", "#F5C932", "#DA3539"],
+                        borderWidth: 1
+                      }],
+                      labels: ['좋음', '보통', '나쁨', '매우 나쁨']
+                    },
+                  options: {
+                    cutoutPercentage: 65,
+                    circumference: Math.PI,
+                    rotation: -Math.PI,
+                    title: { 
+                      display: true,
+                      text: "초미세먼지 (PM2.5)",
+                    },
+                    legend: {
+                      display: false
+                    },
+                  }
+                });
+                
+                  
+                const barChartObject = document.getElementById("barChart").getContext('2d');
+                barChart = new Chart(barChartObject,  {
                   type: 'bar',
                   data: barChartData,
                   options: {
+                    animation: false,
                     title: { 
                       display: true,
-                      text: "PM2.5",
+                      text: "초미세먼지 (PM2.5)",
                     },
                     legend: {
                       display: false
