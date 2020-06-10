@@ -109,7 +109,9 @@ router.get('/api/search', (req, res, next) => {
             <td>${data.dust}</td>
             <td class="${getUltraFineDustStatus(data.ultrafine)}">●</td>
             <td>${data.ultrafine}</td>
-            <td>${data.windDirection}</td>
+            <td>
+              <img class="wind-direction-icon" src="images/arrow-icon.png" alt="wind-direction" style="width: 40px; transform: rotate(${data.windDirection}deg);" />
+            </td>
             <td>${data.windSpeed} (m/s)</td>
             <td>${data.temperature} °C</td>
             <td>${data.humidity} %</td>
