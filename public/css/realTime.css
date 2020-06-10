@@ -12,9 +12,18 @@
   background-image: url('/images/map.png');
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
   border: 3px solid #045586;
   width: 100%;
   height: 100%;
+}
+
+#realTime-container div.mapBox div.map-icon {
+  width: 20px;
+  height: 20px;
+  left: 40%;
+  top: 45%;
+  position: absolute;
 }
 
 #realTime-container div.infoBox {
