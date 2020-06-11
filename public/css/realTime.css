@@ -26,6 +26,17 @@
   position: absolute;
 }
 
+#realTime-container div.mapBox div.map div#map-popup > div {
+  background: #fff;
+  border: #bdbdbd 1px solid;
+  position: absolute;
+  left: 25px;
+  width: 245px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+}
+
 #realTime-container div.infoBox {
   display: flex;
   align-items: center;

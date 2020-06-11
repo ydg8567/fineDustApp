@@ -75,7 +75,7 @@ router.get('/api/get/chartdata', function(req, res, next) {
 
 router.get('/api/get/pm/now', function(req, res, next) {
   const queryForHour = `
-    SELECT MAX(pm10_0) AS ultrafineHour, MAX(pm2_5) AS dustHour, SUBSTR(rgst_dt, 6, 13) AS rgstDt  
+    SELECT MAX(pm10_0) AS ultrafineHour, MAX(pm2_5) AS dustHour, temperature, SUBSTR(rgst_dt, 6, 13) AS rgstDt  
     FROM finedust_tb 
     WHERE rgst_dt LIKE '${moment().format('YYYY-MM-DD HH')}%'
     GROUP BY SUBSTR(rgst_dt, 1, 13) 
@@ -83,7 +83,7 @@ router.get('/api/get/pm/now', function(req, res, next) {
   `;
   
   const queryForToday = `
-    SELECT MAX(pm10_0) AS ultrafineDay, MAX(pm2_5) AS dustDay, SUBSTR(rgst_dt, 6, 13) AS rgstDt 
+    SELECT MAX(pm10_0) AS ultrafineDay, MAX(pm2_5) AS dustDay, temperature, SUBSTR(rgst_dt, 6, 13) AS rgstDt 
     FROM finedust_tb 
     WHERE rgst_dt LIKE '${moment().format('YYYY-MM-DD')}%'
     GROUP BY SUBSTR(rgst_dt, 1, 10) 
@@ -103,6 +103,7 @@ router.get('/api/get/pm/now', function(req, res, next) {
             ...rowsForToday,
             dustStatus: getDustStatus(nvl(rowsForHour) !== 0 && rowsForHour.length > 0 ? rowsForHour.dustHour : 0),
             ultrafineStatus: getUltraFineDustStatus(nvl(rowsForHour) !== 0 && rowsForHour.length > 0 ? rowsForHour.ultrafine : 0),
+            temperature: rowsForHour.temperature,
             today: moment().format('YYYY년 MM월 DD일 hh시')
           });
         }
