@@ -103,7 +103,7 @@ router.get('/api/get/pm/now', function(req, res, next) {
             ...rowsForToday,
             dustStatus: getDustStatus(nvl(rowsForHour) !== 0 && rowsForHour.length > 0 ? rowsForHour.dustHour : 0),
             ultrafineStatus: getUltraFineDustStatus(nvl(rowsForHour) !== 0 && rowsForHour.length > 0 ? rowsForHour.ultrafine : 0),
-            temperature: rowsForHour.temperature,
+            temperature: nvl(rowsForHour) !== 0 ? rowsForHour.temperature : 0,
             today: moment().format('YYYY년 MM월 DD일 hh시')
           });
         }
