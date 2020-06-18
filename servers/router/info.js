@@ -66,7 +66,7 @@ router.get('/', (req, res, next) => {
                                               windSpeed: data.windSpeed,
                                               temperature: data.temperature,
                                               humidity: data.humidity,
-                                              rgst_dt: moment(data.rgst_dt).format('MM-DD:hh')
+                                              rgst_dt: moment(data.rgst_dt).format('MM-DD:HH')
                                             }
                                           })
                                   });
@@ -100,11 +100,12 @@ router.get('/api/search', (req, res, next) => {
   connection.query(query, (err, rows, fields) => {
     if (!err) {
       let result;
+      const dateFormat = {'13': 'MM-DD:HH', '10': 'MM-DD', '18': 'MM-DD HH:mm:ss'};
 
       rows.forEach(data => {
         const html = `
           <tr>
-            <td>${moment(data.rgst_dt).format(params.time === '13' ? 'MM-DD:hh' : 'MM-DD')}</td>
+            <td>${moment(data.rgst_dt).format(dateFormat[params.time])}</td>
             <td class="${getDustStatus(data.dust)}">●</td>
             <td>${data.dust}</td>
             <td class="${getUltraFineDustStatus(data.ultrafine)}">●</td>
