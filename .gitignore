@@ -58,3 +58,6 @@ fineduststatusapp-*
 
 ### psd file ###
 *.psd
+
+### 설정파일 ###
+config.json
