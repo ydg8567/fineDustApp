@@ -12,7 +12,7 @@ const nvl = (value) => {
   return (value === null || value === void 0) ? 0 : value;
 }
 
-const getDustStatus = (value) => {
+const getDustStatus = (value) => {              // 미세먼지 그래프 시각화 (파 -> 초 -> 노 -> 빨, 예외 파랑)
   if (value <= 30) {
     return '#187FCC'
   } 
@@ -30,7 +30,7 @@ const getDustStatus = (value) => {
   }
 }
 
-const getUltraFineDustStatus = (value) => {
+const getUltraFineDustStatus = (value) => {     // 미세먼지 남침반 시각화 (파 -> 초 -> 노 -> 빨, 예외 파랑) => 실 표현 값
   if (value <= 15) {
     return '#187FCC'
   } 
