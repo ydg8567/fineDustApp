@@ -1,32 +1,33 @@
 extends ../layout
 
 block content
-    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
     link(rel='stylesheet', href='/css/board.css')
-    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css')
 
     script.
         const goToAddBoard = () => {
             location.href = '/addBoard';
         }
 
-    table.type09(id='List')
+    table.type09(id='List' class='table table-hover')
         thead
         tr
-            th(scope='cols' style="width:10%") nums
-            th(scope='cols' style="width:55%") Title
-            th(scope='cols' style="width:10%") Views
-            th(scope='cols') Date
-            th(scope='cols' style="width:10%") Author
+            th(scope='cols' style="width:10%") 번호
+            th(scope='cols' style="width:55%") 제목
+            th(scope='cols' style="width:10%") 작성자
+            th(scope='cols') 날짜
+            th(scope='cols' style="width:10%") 조회수
         tbody#tbody
             each map in boardDatas
                 tr
                     td #{map.nums}
-                    td #{map.title}
-                    td #{map.views}
-                    td #{map.date}
+                    td(style="text-align:left")
+                        a(href="#" onclick="goToAddBoard()")= map.title
                     td #{map.autor}
-    div(align="right" style="margin-right:10%;")
+                    td #{map.date}
+                    td #{map.views}
 
+
+    div(align="right" style="margin-right:10%;")
+        //a(class="btn btn-primary pull-right") 글쓰기
         button.btn.btn-primary(onClick='goToAddBoard()') 글 쓰기
 
