@@ -1,65 +1,19 @@
 extends ../layout
 
 block content
-    link(rel='stylesheet', href='/css/board.css')
-
-    table(class='table table-bordered' style="margin-left: auto; margin-right: auto; line-height: 2; width: 80%; margin-top: 3%")
-        thead
-            tr
-                th(style='text-align: center') 작성자
-                th
-                    input.text-input#writer(type="text" placeholder="writer" style="width: 100%; height: 30px")
-                th(style='text-align: center') 비밀번호
-                th
-                    input.text-input#password(type="password" placeholder="password" style="width: 100%; height: 30px")
-            tr
-                th(colspan="1" style='text-align: center') 제 목
-                th(colspan="3")
-                    input.text-input#title(type='text' placeholder='title' style='width: 100%; height: 30px')
-            tr
-                th(colspan="1") 내 용
-                th(colspan="3")
-                    textarea.textarea#content(ng-model='text2', placeholder='내용', style='width: 80%; height: 400px;')
-                    //input.text-input#autor(type='text', placeholder='작성자', style='with: 300px; height:30px;')
-                    //textarea.textarea#content(ng-model='text2', placeholder='내용', style='width: 80%; height: 400px;')
-    //table.type09(id='List' class='table table-hober')
-    //    thead
-    //    tr
-    //        th(style='width: 30px; height:30px') 작성자
-    //        th(style='text-align: left; width: 40px; height:30px')
-    //            input.text-xl-left(type="text" placeholder="writer" style="width: 200px; height: 30px;")
-    //        th(style='width: 10%; height:30px') 비밀번호
-    //            input.text-xl-left(type="password" placeholder="writer" style="width: 300px; height: 30px;")
-    //
-    //table.type09(id='List' class='table table-hober')
-    //    thead
-    //    tr
-    //        th(scope='cols' style="width:10%") 번호
-    //        th(scope='cols' style="width:55%") 제목
-    //        th(scope='cols' style="width:10%") 작성자
-    //        th(scope='cols') 날짜
-    //        th(scope='cols' style="width:10%") 조회수
-    //    tbody#tbody
-    //         each map in boardDatas
-    //             tr
-    //                 td #{map.nums}
-    //                 td(style="text-align:left")
-    //                     a(href="#" onclick="goToAddBoard()")= map.title
-    //                 td #{map.autor}
-    //                 td #{map.date}
-    //                 td #{map.views}
-
-    //ons-page
-    //ons-toolbar
-    //div(style='text-align: center; margin-top:3%;')
-    //    section(style='padding: 8px')
-    //        input.text-input#subject(type='text', ng-model='text', placeholder='제목', style='width: 60%; height:30px;')
-    //        input.text-input#autor(type='text', ng-model='text', placeholder='작성자', style='with: 300px; height:30px;')
-    //    section(style='padding: 0 8px 8px')
-    //        textarea.textarea#content(ng-model='text2', placeholder='내용', style='width: 80%; height: 400px;')
-    //    section(style='padding: 0 8px 8px')
-    //        button(type="button" class='btn btn-primary' onclick='submitFunction()') Submit
-    //        button(type="button" class='btn btn-primary' onclick='submitFunction()') Cancel
+    link(rel='stylesheet', href='css/bootstrap.css')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css')
+    ons-page
+    ons-toolbar
+    div(style='text-align: center; margin-top:3%;')
+        section(style='padding: 8px')
+            input.text-input#subject(type='text', ng-model='text', placeholder='제목', style='width: 60%; height:30px;')
+            input.text-input#autor(type='text', ng-model='text', placeholder='작성자', style='with: 300px; height:30px;')
+        section(style='padding: 0 8px 8px')
+            textarea.textarea#content(ng-model='text2', placeholder='내용', style='width: 80%; height: 400px;')
+        section(style='padding: 0 8px 8px')
+            button(type="button" class='btn btn-primary' onclick='submitFunction()') Submit
+            button(type="button" class='btn btn-primary' onclick='submitFunction()') Cancel
 
     //script.
     //    var subject = document.getElementById('subject');

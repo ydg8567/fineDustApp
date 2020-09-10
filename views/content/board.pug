@@ -1,21 +1,23 @@
 extends ../layout
 
 block content
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
     link(rel='stylesheet', href='/css/board.css')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css')
 
     script.
         const goToAddBoard = () => {
             location.href = '/addBoard';
         }
 
-    table.type09(id='List' class='table table-hover')
+    table.type09(id='List')
         thead
         tr
-            th(scope='cols' style="width:10%") 번호
-            th(scope='cols' style="width:55%") 제목
-            th(scope='cols' style="width:10%") 작성자
-            th(scope='cols') 날짜
-            th(scope='cols' style="width:10%") 조회수
+            th(scope='cols' style="width:10%") nums
+            th(scope='cols' style="width:55%") Title
+            th(scope='cols' style="width:10%") Views
+            th(scope='cols') Date
+            th(scope='cols' style="width:10%") Author
         tbody#tbody
             each map in boardDatas
                 tr
