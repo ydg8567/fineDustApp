@@ -4,19 +4,17 @@ const moment = require('moment');
 const connection = require("../connection");            // DB connection by connection.js
 
 // 현 시간을 나타내는 함수
-function todayDate(dates) {
+function todayDate() {
     let today = new Date();
 
     let year = today.getFullYear();
     let month = today.getMonth();
     let date = today.getDate();
-    // let day = today.getDay();
 
     let hours = today.getHours();
     let minutes = today.getMinutes();
-    let seconds = today.getSeconds();
 
-    return month + '/' + date + ' ' + hours + ':' + minutes;
+    return year + '/' + month + '/' + date + ' ' + hours + ':' + minutes;
 }
 // 함수의 다른 표현 법(2)
 /*const todayDate = (dated) => {
@@ -50,5 +48,20 @@ const boardInfo = {
 router.get('/', (req, res, next) => {
     res.render('content/addBoard');
 })
+/* GET info page. */
+router.get('/api/save', (req, res, next) => {
+    const param = req.query;
+    const query = `
+        INSERT INTO y_board(title, views, date, autor, password, content) 
+        VALUES('${param.title}', 1, '${todayDate()}', '${param.autor}', '${param.password}', '${param.content}')
+    `;
 
+    connection.query(query, function(err, rows, fileds) {
+        if(!err) {
+            res.send("success");
+        } else {
+            res.send(err);
+        }
+    });
+})
 module.exports = router;
