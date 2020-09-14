@@ -4,13 +4,16 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const server = require('./servers/server');
+const bodyparser = require('body-parser');                            // post body에서 param 가져오기
 
-const indexRouter = require('./servers/router/index');        // "실시간 자료조회" 상단 버튼 & 초기 화면
-const infoRouter = require('./servers/router/info');          // "통계 정보" 상단 버튼
-const supportRouter = require('./servers/router/support');    // "고객 지원" 상단 버튼
-const boardRouter = require('./servers/router/board');        // "게시판" 상단 버튼
-const addBoardRouter = require('./servers/router/addBoard');  // "게시판 글 작성"
-const dataCheckRouter = require('./servers/router/dataCheck');
+const indexRouter = require('./servers/router/index');                // "실시간 자료조회" 상단 버튼 & 초기 화면
+const infoRouter = require('./servers/router/info');                  // "통계 정보" 상단 버튼
+const supportRouter = require('./servers/router/support');            // "고객 지원" 상단 버튼
+const boardRouter = require('./servers/router/board');                // "게시판" 상단 버튼
+const addBoardRouter = require('./servers/router/addBoard');          // "게시판 글 작성"
+const updateBoardRouter = require('./servers/router/updateBoard');   // "게시판" 글 수정
+const editBoardRouter = require('./servers/router/editBoard');       // "게시판" 글 변경
+const dataCheckRouter = require('./servers/router/dataCheck');        // "통계" 상단버튼
 
 const app = express();
 const config = require('./config.json')[app.get('env')];
@@ -20,9 +23,12 @@ app.set('config', config);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));        // (post 미들웨어)
+app.use(bodyparser.urlencoded({ extended: false}));
+app.use(bodyparser.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));        // (정적 미들웨어)파일의 경로 설정 => express.static(__dirname+'/public') 이런 식으로도 사용 하지만 '나 /같이 불필요한게 있으면 오류
 app.use('/', indexRouter);
@@ -30,7 +36,9 @@ app.use('/info', infoRouter);
 app.use('/support', supportRouter);
 app.use('/board', boardRouter);                                 // 게시판 사용
 app.use('/addBoard', addBoardRouter);                           // 글 작성 사용
-app.use('/dataCheck', dataCheckRouter);
+app.use('/updateBoard', updateBoardRouter);                    // 글 수정 사용
+app.use('/editBoard', editBoardRouter);                      // 글 변경 사용
+app.use('/dataCheck', dataCheckRouter);                         // 통계 게시판 사용
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

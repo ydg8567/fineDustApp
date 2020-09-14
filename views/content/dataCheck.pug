@@ -2,6 +2,7 @@ extends ../layout
 
 block content
     link(rel='stylesheet', href='/css/info.css')
+    
     script.
         $( function() {
             $("#startDate").datepicker({defaultDate: new Date()}).val(moment().format('YYYY-MM-DD'));

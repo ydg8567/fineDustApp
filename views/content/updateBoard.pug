@@ -1,0 +1,87 @@
+extends ../layout
+
+block content
+    script.
+        const passwordCheck = (nums, divide) => {
+            const password = document.getElementById("password").value;
+
+            $.ajax({
+                url: "/updateBoard/api/passwordCheck",
+                data: JSON.stringify({
+                    "password": password,
+                    "nums": nums
+                }),
+                type: "post",
+                dateType: "html",
+                contentType: "application/json",
+
+                success: (result) => {
+                    if (result == "correctPassword") {          // password correct
+                        if(divide == "delete") {            // delete
+                            deleteFunction(nums);
+                        } else if(divide == "update") {     // update
+                            updateFunction(nums);
+                        }
+                    } else if (result == "wrongPassword") {     // password wrong
+                        alert("비밀번호가 틀렸습니다.");
+                    } else {
+                        console.log("result err");
+                    }
+                },
+                error: (err) => {
+                    console.log(err)
+                }
+            })
+        }
+        const updateFunction = (nums) => {
+            location.href = '/editBoard?nums=' + nums;
+        }
+        const deleteFunction = (nums) => {
+            $.ajax({
+                url: "/updateBoard/api/delete",
+                data: JSON.stringify({
+                    "nums": nums
+                }),
+                type: "post",
+                dateType: "html",
+                contentType: "application/json",
+
+                success: (result) => {
+                    if(result == "deleteSuccess") {
+                        location.href = '/board';
+                        alert("게시글 삭제.")
+                    } else {
+                        console.log("delete err");
+                    }
+                },
+                error: (err) => {
+                    console.log(err)
+                }
+            })
+        }
+
+        const outToThisPage = () => {
+            location.href='/board';
+        }
+
+    p( style="margin-top: 3%; font-size: 30px; text-align: center") 게시글 조회
+    table#addBoardTable(class = "table table-bordered" style = "margin-left: auto; margin-right: auto; margin-top:1%; line-height: 1.5; width: 33%;")
+        each map in boardDatas
+            thead
+                tr
+                    td(style='background: #f3f6f7; width: 20%') 작성자
+                    td(style='padding: 10px; width: 80%')= map.autor
+                tr
+                    td(style='background: #f3f6f7') 제목
+                    td(style='padding: 10px')= map.title
+            tbody
+                tr
+                    td(style='background: #f3f6f7') 내용
+                    td(style='padding: 10px; height: 300px')= map.content
+
+                tr
+                    td(colspan="2" style="margin-right:10%; text-align: right")
+                        input.text-input#password(type='password' placeholder='비밀번호' class="mr-2" style="width: 140px")
+                        button(type="button" class='btn btn-primary mr-2' onclick="passwordCheck(" + map.nums + ", 'update')") 글 수정
+                        button(type="button" class='btn btn-primary mr-2' onclick="passwordCheck(" + map.nums + ", 'delete')") 글 삭제
+                        button(type="button" class='btn btn-primary mr-2' onclick='outToThisPage()') 취 소

@@ -5,10 +5,14 @@ const connection = require("../connection");            // DB connection by conn
 
 /* GET info page. */
 router.get('/', (req, res, next) => {
-    const query = 'SELECT nums, title, views, date, autor From y_board';
+    const query = `
+        SELECT nums, title, views, date, autor 
+        FROM y_board
+        ORDER BY nums DESC
+    `;
+
     connection.query(query, (err, rows, fields) => {
         if (!err) {
-            console.log('wow');
             res.render('content/board', {
                 'boardDatas': rows.map(data => {
                     return {

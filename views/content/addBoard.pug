@@ -1,36 +1,61 @@
 extends ../layout
 
 block content
-    link(rel='stylesheet', href='css/bootstrap.css')
-    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css')
-    ons-page
-    ons-toolbar
-    div(style='text-align: center; margin-top:3%;')
-        section(style='padding: 8px')
-            input.text-input#subject(type='text', ng-model='text', placeholder='제목', style='width: 60%; height:30px;')
-            input.text-input#autor(type='text', ng-model='text', placeholder='작성자', style='with: 300px; height:30px;')
-        section(style='padding: 0 8px 8px')
-            textarea.textarea#content(ng-model='text2', placeholder='내용', style='width: 80%; height: 400px;')
-        section(style='padding: 0 8px 8px')
-            button(type="button" class='btn btn-primary' onclick='submitFunction()') Submit
-            button(type="button" class='btn btn-primary' onclick='submitFunction()') Cancel
+    script.
+        const submitFunction = () => {
+            const autor = document.getElementById("autor").value;
+            const password = document.getElementById("password").value;
+            const title = document.getElementById("title").value;
+            const content = document.getElementById("content").value;
 
-    //script.
-    //    var subject = document.getElementById('subject');
-    //    var content = document.getElementById('content');
-    //    var url = 'http://localhost:3000/write_receive';
-    //    function submitFunction() {
-    //        var data = {'subject': subject.value, 'content': content.value};
-    //        data = JSON.stringify(data);
-    //        var xhr = new XMLHttpRequest();
-    //        xhr.open('POST', url, true);
-    //        xhr.setRequestHeader('Content-type', 'application/json');
-    //        xhr.send(data);
-    //        xhr.addEventListener('load', function () {
-    //            var result = JSON.parse(xhr.responseText);
-    //            if (result.result == 'ok') {
-    //                alert('작성완료')
-    //                location.replace('http://localhost:3000/commuity')
-    //            }
-    //        })
-    //    }
+            $.ajax({
+                url: "/addBoard/api/save",
+                data: {
+                    "autor": autor,
+                    "password": password,
+                    "title": title,
+                    "content": content
+                },
+                type: "get",
+                dateType: "html",
+                contentType: "application/json",
+
+                success: (result) => {
+                    console.log(result)
+                    location.href = 'board';
+                },
+                error: (err) => {
+                    console.log(err)
+                }
+            })
+        }
+
+        const outToThisPage = () => {
+            history.back();
+        }
+
+    p( style="margin-top: 3%; font-size: 30px; text-align: center") 새 게시글 작성
+    table#addBoardTable(class = "table table-bordered" style = "margin-left: auto; margin-right: auto; margin-top:1%; line-height: 1.5; width: 33%;")
+        thead
+            tr
+                td(style='background: #f3f6f7; width: 22%') 작성자
+                td(style='padding: 10px; width: 80%')
+                    input.text-input#autor(type='text', placeholder='작성자')
+            tr
+                td(style='background: #f3f6f7') 비밀번호
+                td(style='padding: 10px')
+                    input.text-input#password(type='password' placeholder='비밀번호')
+            tr
+                td(style='background: #f3f6f7') 제목
+                td(style='padding: 10px')
+                    input.text-input#title(type='text' placeholder='제목' style="width: 100%")
+        tbody
+            tr
+                td(style='background: #f3f6f7') 내용
+                td(style='padding: 10px')
+                    textarea.textarea#content(placeholder='내용' style='width: 100%; height: 300px;')
+
+            tr
+                td(colspan="2" style="margin-right:10%; text-align: right")
+                        button(type="button" class='btn btn-primary mr-2' onclick='submitFunction()') 글 쓰기
+                        button(type="button" class='btn btn-primary mr-2' onclick='outToThisPage()') 취 소

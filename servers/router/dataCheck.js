@@ -86,7 +86,6 @@ const tableQuery = (req_Obj, data) => {
     FROM finedust_tb ${query}
     GROUP BY SUBSTR(rgst_dt, 1, 10)
     ORDER BY rgst_dt DESC
-    LIMIT 30
   `;
 }
 const statsQuery = (req_Obj, data) => {
