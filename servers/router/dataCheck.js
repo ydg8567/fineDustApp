@@ -96,29 +96,60 @@ const statsQuery = (req_Obj, data) => {
         query = conditionQuery(req_Obj);
     }
 
+    // return `
+    // SELECT * FROM (
+    //     SELECT COUNT(*) AS stats FROM (
+    //         SELECT * FROM finedust_tb ${query} GROUP BY SUBSTR(rgst_dt, 1, 10) HAVING MAX(PM10_0) <= 30)a union all
+    //     SELECT COUNT(*) AS cnt FROM (
+    //         SELECT * FROM finedust_tb ${query} GROUP BY SUBSTR(rgst_dt, 1, 10) HAVING MAX(PM10_0) > 30 AND MAX(PM10_0) <= 80)b union all
+    //     SELECT COUNT(*) AS cnt FROM (
+    //         SELECT * FROM finedust_tb ${query} GROUP BY SUBSTR(rgst_dt, 1, 10) HAVING MAX(PM10_0) > 80 AND MAX(PM10_0) <= 150)c union all
+    //     SELECT COUNT(*) AS cnt FROM (
+    //         SELECT * FROM finedust_tb ${query} GROUP BY SUBSTR(rgst_dt, 1, 10) HAVING MAX(PM10_0) > 150)d union all
+    //     SELECT COUNT(*) AS cnt FROM (
+    //         SELECT * FROM finedust_tb ${query} GROUP BY SUBSTR(rgst_dt, 1, 10) HAVING MAX(PM2_5) <= 15)e union all
+    //     SELECT COUNT(*) AS cnt FROM (
+    //         SELECT * FROM finedust_tb ${query} GROUP BY SUBSTR(rgst_dt, 1, 10) HAVING MAX(PM2_5) > 15 AND MAX(PM2_5) <= 35)f union all
+    //     SELECT COUNT(*) AS cnt FROM (
+    //         SELECT * FROM finedust_tb ${query} GROUP BY SUBSTR(rgst_dt, 1, 10) HAVING MAX(PM2_5) > 35 AND MAX(PM2_5) <= 75)g union all
+    //     SELECT COUNT(*) AS cnt FROM (
+    //         SELECT * FROM finedust_tb ${query} GROUP BY SUBSTR(rgst_dt, 1, 10) HAVING MAX(PM2_5) > 78)h
+    // )t`;
+
     return `
-    SELECT * FROM (
-        SELECT COUNT(*) AS stats FROM (
-            SELECT * FROM finedust_tb ${query} GROUP BY SUBSTR(rgst_dt, 1, 10) HAVING MAX(PM10_0) <= 30)a union all
-        SELECT COUNT(*) AS cnt FROM (
-            SELECT * FROM finedust_tb ${query} GROUP BY SUBSTR(rgst_dt, 1, 10) HAVING MAX(PM10_0) > 30 AND MAX(PM10_0) <= 80)b union all
-        SELECT COUNT(*) AS cnt FROM (
-            SELECT * FROM finedust_tb ${query} GROUP BY SUBSTR(rgst_dt, 1, 10) HAVING MAX(PM10_0) > 80 AND MAX(PM10_0) <= 150)c union all
-        SELECT COUNT(*) AS cnt FROM (
-            SELECT * FROM finedust_tb ${query} GROUP BY SUBSTR(rgst_dt, 1, 10) HAVING MAX(PM10_0) > 150)d union all
-        SELECT COUNT(*) AS cnt FROM (
-            SELECT * FROM finedust_tb ${query} GROUP BY SUBSTR(rgst_dt, 1, 10) HAVING MAX(PM2_5) <= 15)e union all
-        SELECT COUNT(*) AS cnt FROM (
-            SELECT * FROM finedust_tb ${query} GROUP BY SUBSTR(rgst_dt, 1, 10) HAVING MAX(PM2_5) > 15 AND MAX(PM2_5) <= 35)f union all
-        SELECT COUNT(*) AS cnt FROM (
-            SELECT * FROM finedust_tb ${query} GROUP BY SUBSTR(rgst_dt, 1, 10) HAVING MAX(PM2_5) > 35 AND MAX(PM2_5) <= 75)g union all
-        SELECT COUNT(*) AS cnt FROM (
-            SELECT * FROM finedust_tb ${query} GROUP BY SUBSTR(rgst_dt, 1, 10) HAVING MAX(PM2_5) > 78)h
-    )t`;
+    SELECT 
+        COUNT(CASE WHEN PM10_0 <= 30 THEN 'good' END) AS fine_good_cnt,
+        COUNT(CASE WHEN PM10_0 > 30 AND PM10_0 <= 80 THEN 'normal' END) AS fine_normal_cnt,
+        COUNT(CASE WHEN PM10_0 > 80 AND PM10_0 <= 150 THEN 'bad' END) AS fine_bad_cnt,
+        COUNT(CASE WHEN PM10_0 > 150 THEN 'soBad' END) AS fine_soBad_cnt,
+        COUNT(CASE WHEN PM2_5 <= 15 THEN 'good' END) AS ultraFine_good_cnt,
+        COUNT(CASE WHEN PM2_5 > 15 AND PM2_5 <= 35 THEN 'normal' END) AS ultraFine_normal_cnt,
+        COUNT(CASE WHEN PM2_5 > 35 AND PM2_5 <= 75 THEN 'bad' END) AS ultraFine_bad_cnt,
+        COUNT(CASE WHEN PM2_5 > 75 THEN 'soBad' END) AS ultraFine_soBad_cnt
+    FROM finedust_tb
+    ${query}
+    `
 }
 /* GET info page. */
 router.get('/', (req, res, next) => {
     let initData;
+
+    const testQuery = `
+    SELECT 
+        COUNT(CASE WHEN finedust <= 30 THEN 'good' END) AS fine_good_cnt,
+        COUNT(CASE WHEN finedust > 30 AND finedust <= 80 THEN 'normal' END) AS fine_normal_cnt,
+        COUNT(CASE WHEN finedust > 80 AND finedust <= 150 THEN 'bad' END) AS fine_bad_cnt,
+        COUNT(CASE WHEN finedust > 150 THEN 'soBad' END) AS fine_soBad_cnt,
+        COUNT(CASE WHEN ultra <= 15 THEN 'good' END) AS ultraFine_good_cnt,
+        COUNT(CASE WHEN ultra > 15 AND ultra <= 35 THEN 'normal' END) AS ultraFine_normal_cnt,
+        COUNT(CASE WHEN ultra > 35 AND ultra <= 75 THEN 'bad' END) AS ultraFine_bad_cnt,
+        COUNT(CASE WHEN ultra > 75 THEN 'soBad' END) AS ultraFine_soBad_cnt
+    FROM (
+        SELECT MAX(PM10_0) AS finedust, MAX(PM2_5) AS ultra, LEFT(rgst_dt, 10) AS date
+        FROM finedust_tb
+        GROUP BY date
+    ) statsTable
+    `;
 
     connection.query(statsQuery(res.query, 1), function(err, rows, fields) {
         if(!err) {
@@ -128,6 +159,14 @@ router.get('/', (req, res, next) => {
             res.render('content/dataCheck', err);
         }
     })
+    // connection.query(testQuery, function(err, rows, fields) {
+    //     if(!err) {
+    //         initData = rows;
+    //     } else {
+    //         console.log(err);
+    //         res.render('content/dataCheck', err);
+    //     }
+    // })
 
     connection.query(tableQuery(req.query, 1), (err, rows, fields) => {
         if (!err) {
@@ -185,20 +224,39 @@ router.get('/api/search', (req, res, next) => {
     })
 })
 router.get('/api/stats', (req, res, next) => {
+    const testQuery = `
+    SELECT 
+        COUNT(CASE WHEN finedust <= 30 THEN 'good' END) AS fine_good_cnt,
+        COUNT(CASE WHEN finedust > 30 AND finedust <= 80 THEN 'normal' END) AS fine_normal_cnt,
+        COUNT(CASE WHEN finedust > 80 AND finedust <= 150 THEN 'bad' END) AS fine_bad_cnt,
+        COUNT(CASE WHEN finedust > 150 THEN 'soBad' END) AS fine_soBad_cnt,
+        COUNT(CASE WHEN ultra <= 15 THEN 'good' END) AS ultraFine_good_cnt,
+        COUNT(CASE WHEN ultra > 15 AND ultra <= 35 THEN 'normal' END) AS ultraFine_normal_cnt,
+        COUNT(CASE WHEN ultra > 35 AND ultra <= 75 THEN 'bad' END) AS ultraFine_bad_cnt,
+        COUNT(CASE WHEN ultra > 75 THEN 'soBad' END) AS ultraFine_soBad_cnt
+    FROM (
+        SELECT MAX(PM10_0) AS finedust, MAX(PM2_5) AS ultra, LEFT(rgst_dt, 10) AS rgst_dt
+        FROM finedust_tb
+        GROUP BY LEFT(rgst_dt, 10)
+    ) statsTable
+    ${conditionQuery(req.query)}
+    `;
+
+    // statsQuery(req.query, 0)
     connection.query(statsQuery(req.query, 0), function (err, rows, fileds) {
         if(!err) {
             const html = `
                 <tr>
-                    <td>${rows[0].stats} 회</td>
-                    <td>${rows[1].stats} 회</td>
-                    <td>${rows[2].stats} 회</td>
-                    <td>${rows[3].stats} 회</td>
+                    <td>${rows[0].fine_good_cnt} 회</td>
+                    <td>${rows[0].fine_normal_cnt} 회</td>
+                    <td>${rows[0].fine_bad_cnt} 회</td>
+                    <td>${rows[0].fine_soBad_cnt} 회</td>
                 </tr>
                 <tr>
-                    <td>${rows[4].stats} 회</td>
-                    <td>${rows[5].stats} 회</td>
-                    <td>${rows[6].stats} 회</td>
-                    <td>${rows[7].stats} 회</td>
+                    <td>${rows[0].ultraFine_good_cnt} 회</td>
+                    <td>${rows[0].ultraFine_normal_cnt} 회</td>
+                    <td>${rows[0].ultraFine_bad_cnt} 회</td>
+                    <td>${rows[0].ultraFine_soBad_cnt} 회</td>
                 </tr>
             `
 

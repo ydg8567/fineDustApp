@@ -144,7 +144,7 @@ block content
                             -for (let i = 1; i <= 12; i++)
                                 option(value=i)= i + '월'
                         select#selectWeek(name="selectWeek" style="display:none; width:100px")
-                             -for (let i = 1; i <= 5; i++)
+                             -for (let i = 1; i <= 6; i++)
                                  option(value=i)= i + '주차'
                 .row
                     .col-2 ■ 시작날짜
@@ -174,15 +174,15 @@ block content
                                 th(scope='cols' style="width:29%") ■ 매우나쁨(초미세/미세)
                         tbody
                             tr
-                                td #{initData[0].stats} 회
-                                td #{initData[1].stats} 회
-                                td #{initData[2].stats} 회
-                                td #{initData[3].stats} 회
+                                td #{initData[0].fine_good_cnt} 회
+                                td #{initData[0].fine_normal_cnt} 회
+                                td #{initData[0].fine_bad_cnt} 회
+                                td #{initData[0].fine_soBad_cnt} 회
                             tr
-                                td #{initData[4].stats} 회
-                                td #{initData[5].stats} 회
-                                td #{initData[6].stats} 회
-                                td #{initData[7].stats} 회
+                                td #{initData[0].ultraFine_good_cnt} 회
+                                td #{initData[0].ultraFine_normal_cnt} 회
+                                td #{initData[0].ultraFine_bad_cnt} 회
+                                td #{initData[0].ultraFine_soBad_cnt} 회
 
         .row.info-table
             .col-12
